@@ -415,7 +415,7 @@ function forms_builder(send_template_to, csrf){
             data = this.get_empty_form();
         }
         this.id_counter = data.aux.id_counter;
-        this.template_id = data.aux.template_id;
+        this.template_id = data.aux.template_id ?? -1;
         console.warn('data.aux.template_id');
         console.warn(data.aux.template_id);
         data.items.forEach((item, index, arr)=>{

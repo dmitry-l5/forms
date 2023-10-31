@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormTemplate;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class FormTemplateController extends Controller
 {
@@ -29,38 +31,31 @@ class FormTemplateController extends Controller
      */
     public function store(Request $request)
     {
-
-        dd(json_decode($request->input('result_json')), $request->all());
-
-        $form_data = json_decode($json_str);
-        // $old_form = WorksheetTemplate::where(['id' => $form_data->id]);
-        $new_form = WorksheetTemplate::where(['id'=>$form_data->aux->template_id])->first();
-        //  dd('   ---   ', $form_data);
-        //  dd('   ---   ', $new_form);
-        $result = new \stdClass();
-        if($new_form){
-            $old_json = $new_form->data_json;
-            $result = $this->compare_templates($old_json, $json_str);
-        }else{
-            $new_form = new WorksheetTemplate();
+        $validator = Validator::make($request->all(), [
+            'result_json'=>'required|json'
+        ]);
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
         }
-        // dd('   ---   ', $form_data);
-        $new_form->author_id = Auth::user()->id;
-        $new_form->author = Auth::user()->name;
-        $new_form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
-        $new_form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
+        $validated = $validator->validate();
+        $form_data = json_decode($validated['result_json']);
+        $result = new \stdClass();
+
+        $form = new FormTemplate();
+    
+        $form->author_id = Auth::user()->id;
+        $form->author = Auth::user()->name;
+        $form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
+        $form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
         $obj = new \stdClass();
-        $obj->aux = (object)[];
-        $obj->items = [];
-        $new_form->data_json = json_encode($obj);
-        $new_form->save();
-        $form_data->aux->template_id =  $new_form->id;
-        $new_form->data_json = json_encode($form_data);
-        $new_form->save();
-        // dd(json_decode($new_form->data_json));
-        // dd($new_form);
-        $result->template = $new_form;
-        return $result;
+
+        $form->data_json = json_encode($obj);
+        $form->save();
+        $form_data->aux->template_id =  $form->id;
+        $form->data_json = json_encode($form_data);
+        $form->save();
+
+        return redirect(url('/manage/form_templates'));
     }
 
     /**
