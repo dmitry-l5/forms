@@ -1,0 +1,69 @@
+.mr-5{
+    margin-right: 5px;
+}
+.button{
+    text-align: center;
+    color:whitesmoke;
+    padding: 2px 15px;
+    border: 1px solid black; 
+}
+.button_ok{
+    background-color: green;
+}
+.button_gray{
+    background-color: gray;
+}
+.button_add{
+    background-color: dodgerblue;
+}
+.delete_button{
+    text-align: center;
+    color:whitesmoke;
+    background-color: brown;
+    padding: 2px 15px;
+
+    border: 1px solid black;
+}
+.delete_button:hover{
+    background-color: red;
+}
+.forms_builder{
+    background-color:blanchedalmond;
+}
+.form_header{
+    text-align: center;
+    font-weight: bold;
+    font-size:x-large;
+}
+.forms_builder .header_block{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding:0px 10px 0px 10px;
+}
+.header_block + *{
+    border: 3px solid black;
+}
+
+.type_field_select{
+    padding:0px 10px 0px 10px;
+    display:flex;
+    justify-content: end;
+    width: 100%;
+}
+.type_field_select > * + *{
+    margin-left: 10px;
+}
+.type_field_select select{
+width: 100%;
+    border:1px solid black;
+}
+
+
+
+.options_panel{
+    border: 3px dotted black;
+}
+.add_option_button > button{
+    background-color: cornflowerblue;
+}
