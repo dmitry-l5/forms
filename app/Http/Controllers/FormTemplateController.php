@@ -15,7 +15,7 @@ class FormTemplateController extends Controller
     public function index()
     {
         $templates = FormTemplate::orderBy('created_at', 'DESC')->paginate(4);
-        return view('forms.templates_list', compact('templates'));
+        return view('forms_manage.templates_list', compact('templates'));
     }
 
     /**
@@ -23,7 +23,7 @@ class FormTemplateController extends Controller
      */
     public function create()
     {
-        return view('forms.create_form');
+        return view('forms_manage.create_form');
     }
 
     /**
@@ -42,9 +42,7 @@ class FormTemplateController extends Controller
         $result = new \stdClass();
 
         $form = new FormTemplate();
-    
         $form->author_id = Auth::user()->id;
-        $form->author = Auth::user()->name;
         $form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
         $form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
         $obj = new \stdClass();

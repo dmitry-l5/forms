@@ -1,33 +1,44 @@
-
-<!-- @vite('resources/js/forms_builder.js') -->
-<script src="{{ asset('js/forms_builder.js') }}"></script> 
 <x-layouts.app>
-    <div class=" rounded mt-3 p-3 mp-3">
-        <script> 
-            //let send_to = "{{ url('student/submit_worksheet') }}";
-            let csrf = '@csrf';
-        </script>
-        <div class="">
-            <div style='margin:10px;'></div>
-            <div class="forms_builder" id='editor'></div>
-            <div style='margin:10px;'></div>
-            <div class="worksheet" id='viewer'></div>
-            <div style='margin:10px;'></div>
-        </div>
-        <?php 
-            if(isset($worksheet)){
-                echo(
-                    "<script> let data_json = ".json_encode($worksheet->data_json)."; </script>"
-                );
-            }else{
-                echo( "<script> let data_json = null; </script>" );
-            }
-        ?>
-        <script>
-            let form = new forms_builder( "{{ url('manage/form_templates/') }}", csrf);
-            //form.draw_editor(editor, data_json);
-            form.draw_editor(editor, JSON.stringify(form.get_test_form()));
-        </script>
-    </div>
+    @php
+        $data = json_decode($template->data_json);
+        //dd($data);
+    @endphp
+    <div class="mx-48">
+        <form action="{{ url('form/store/'.$data->aux->template_id) }}" method="post">
+            @csrf
+        @foreach ($data->items as $item )
+            <div class="">
+                @if ($item->type == 'header')
+                    <div class="">{{ $item->title}}</div>
+                    <div class="">{{ $item->description}}</div>
+                @else
+                    <div class="">
+                        <div class="">{{ $item->title}}</div>
+                        <div class="">{{ $item->description}}</div>
+                    </div>
+                    @switch($item->type)
+                        @case('checkbox_group')
+                            <div class="">
+                                @if(isset($item->options))
+                                    @foreach ($item->options as $title => $option)
+                                    <label for="{{ $title }}">{{ $option }}</label>
+                                    <input type="checkbox" name="{{$item->input_name}}[{{ $title }}]" id="{{ $title }}">
+                                    @endforeach
+                                @endif
+                            </div>
+                            @break
+                    
+                        @default
+                            
+                    @endswitch
+         
 
+                @endif
+            </div>
+        @endforeach
+        <div class="">
+            <button class="border border-black px-3 py-1" type="submit">Сохранить</button>
+        </div>
+        </form>
+    </div>
 </x-layouts.app>

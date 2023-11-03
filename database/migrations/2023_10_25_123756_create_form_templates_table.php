@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('published')->default(false);
             $table->boolean('removed')->default(false);
             $table->string('user_remove')->default('unknown');
-            $table->longText('data_json');
+            $table->json('data_json');
             $table->timestamps();
         });
     }

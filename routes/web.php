@@ -23,6 +23,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::get('form/create/{template}', [App\Http\Controllers\FormController::class, 'create']);
+Route::post('form/store/{template}', [App\Http\Controllers\FormController::class, 'store']);
+Route::resource('form', App\Http\Controllers\FormController::class)->except(['create', 'store' ]);
+
+
     // Route::prefix('forms')->group(function(){
     //     Route::get('');
     // })
