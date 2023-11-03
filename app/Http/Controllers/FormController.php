@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormTemplate;
+use App\Models\Answers;
+use Illuminate\Support\Facades\Validator;
+
 
 class FormController extends Controller
 {
@@ -30,7 +33,22 @@ class FormController extends Controller
      */
     public function store(FormTemplate $template, Request $request)
     {
-        dd($request->all(), $template);
+        // $validator = Validator::make($request->all(), [
+        //     'form_data'=>['required','json'],
+        // ]);
+        // if ($validator->fails()){
+        //     return back()->withErrors($validator)->withInput();
+        // }
+        $validated = $request->all();// $validator->validate();
+        dd($validated);
+        $answer = new Answers();
+        $answer->ip = $request->ip();
+        $answer->userAgent = $request->userAgent();
+        $answer->template_id = $template->id;
+        $answer->data = $validated['form_data'];// json_encode([]);
+        $answer->additional_data = json_encode([]);
+
+        dd($answer, $request->userAgent(), $request->ip(), $request->all(), $template);
     }
 
     /**
