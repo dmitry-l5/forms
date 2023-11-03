@@ -2,7 +2,9 @@
     <div class="mx-48">
     @foreach ($templates as $template )
         <div class="">
-            <a href="{{ url('form/create/'.$template->id)  }}">{{ $template->title}}</a>
+            <span>{{ $template->title}}</span>
+            <a href="{{ url('form/create/'.$template->id)  }}">Пройти опрос</a>
+            <a href="{{ url('form/create/'.$template->id)  }}">Просмотр результатов</a>
         </div>
     @endforeach
     </div>

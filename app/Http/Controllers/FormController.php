@@ -30,13 +30,13 @@ class FormController extends Controller
      */
     public function store(FormTemplate $template, Request $request)
     {
-        dd('gygou');
+        dd($request->all(), $template);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(FormTemplate $template)
     {
         //
     }
