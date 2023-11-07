@@ -40,15 +40,16 @@ class FormController extends Controller
         //     return back()->withErrors($validator)->withInput();
         // }
         $validated = $request->all();// $validator->validate();
-        dd($validated);
+        $data = $validated;
+        unset($data['_token']);
         $answer = new Answers();
         $answer->ip = $request->ip();
         $answer->userAgent = $request->userAgent();
         $answer->template_id = $template->id;
-        $answer->data = $validated['form_data'];// json_encode([]);
+        $answer->data = json_encode([$data]);
         $answer->additional_data = json_encode([]);
-
-        dd($answer, $request->userAgent(), $request->ip(), $request->all(), $template);
+        $answer->save();
+        return view('forms.thanks', []);
     }
 
     /**
