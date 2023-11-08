@@ -55,9 +55,36 @@ class FormController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FormTemplate $template)
-    {
-        //
+    public function show(FormTemplate $form){
+        $result = array();
+        array_walk(json_decode($form->data_json)->items, 
+        function($value, $key)use(&$result){
+            if(isset($value->input_name)){
+                $value->result = null;
+                $result[$value->input_name ?? ''] = $value;
+            }
+        });
+        $result = (object)$result;
+        $answers = Answers::where(['template_id'=>$form->id])->get();
+        array_map(function($item)use($form, &$result){
+            array_walk(json_decode($item['data'], false)[0], 
+            function($value, $key)use(&$result){
+                switch($result->{$key}->type){
+                    case 'checkbox_group':
+                        foreach((array)$value as $input_name => $input_value){
+                            $result->{$key}->{$input_name} ?? $result->{$key}->{$input_name} = 0;
+                            $result->{$key}->{$input_name} += 1;
+                        }
+                  
+                        // $result->{$key}->
+                        break;
+                    default:
+                        echo($result->{$key}->type.'</br>');
+                        break;
+                }
+            });
+        },$answers->toArray());
+        dd($result, json_decode($form->data_json), $answers->toArray(), $answers);
     }
 
     /**

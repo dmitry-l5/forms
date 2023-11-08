@@ -42,7 +42,7 @@ class FormTemplateController extends Controller
         $result = new \stdClass();
 
         $form = new FormTemplate();
-        $form->author_id = Auth::user()->id;// ?? 1;
+        $form->author_id = Auth::user()->id ?? 1;
         $form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
         $form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
         $obj = new \stdClass();
