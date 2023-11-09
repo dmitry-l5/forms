@@ -59,9 +59,21 @@ class FormController extends Controller
         $result = array();
         array_walk(json_decode($form->data_json)->items, 
         function($value, $key)use(&$result){
-            if(isset($value->input_name)){
-                $value->result = null;
-                $result[$value->input_name ?? ''] = $value;
+            switch($value->type){
+                case 'header':
+                    $result['header'] = $value;
+                    break;
+                case 'checkbox_group':
+                    $value->result = clone $value->options;
+                    foreach($value->result as $key => $option){$value->result->{$key} = 0;}
+                    $result[$value->input_name ?? ''] = $value;
+                    break;
+                default:
+                    if(isset($value->input_name)){
+                        $value->result = null;
+                        $result[$value->input_name ?? ''] = $value;
+                    }
+                    break;
             }
         });
         $result = (object)$result;
@@ -72,11 +84,17 @@ class FormController extends Controller
                 switch($result->{$key}->type){
                     case 'checkbox_group':
                         foreach((array)$value as $input_name => $input_value){
-                            $result->{$key}->{$input_name} ?? $result->{$key}->{$input_name} = 0;
-                            $result->{$key}->{$input_name} += 1;
+                            $result->{$key}->result->{$input_name} ?? $result->{$key}->result->{$input_name} = 0;
+                            $result->{$key}->result->{$input_name} += 1;
                         }
-                  
                         // $result->{$key}->
+                        break;
+                    case 'date':
+                    case 'number':
+                    case 'string':
+                        // dd($result->{$key}->result, $value);
+                        $result->{$key}->result ?? array();
+                        $result->{$key}->result[] = $value;
                         break;
                     default:
                         echo($result->{$key}->type.'</br>');
@@ -84,7 +102,8 @@ class FormController extends Controller
                 }
             });
         },$answers->toArray());
-        dd($result, json_decode($form->data_json), $answers->toArray(), $answers);
+        return view('forms.viewer', compact('form','result'));
+        //dd($result, json_decode($form->data_json), $answers->toArray(), $answers);
     }
 
     /**

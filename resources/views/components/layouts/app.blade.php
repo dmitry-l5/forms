@@ -9,7 +9,7 @@
 <body class=" text-lg">
     <section>
         <div class="w-full bg-green-700">
-            {{ $header ?? 'oppa' }}
+            {{ $header ?? 'header' }}
         </div>
     </section>
     <div class="">
@@ -24,7 +24,9 @@
         </section>
     </div>
     <footer>
-
+        <div class="w-full bg-green-700">
+            {{ $footer ?? 'footer' }}
+        </div>
     </footer>
 </body>
 </html>
