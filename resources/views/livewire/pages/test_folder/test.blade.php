@@ -9,7 +9,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new 
+#[Layout('layouts.test')] 
+class extends Component
 {
     #[Rule(['required', 'string', 'email'])]
     public string $email = '';
@@ -22,19 +24,22 @@ new #[Layout('layouts.guest')] class extends Component
 
     public function login(): void
     {
-        
         $this->validate();
+        
         $this->ensureIsNotRateLimited();
+
         if (! auth()->attempt($this->only(['email', 'password'], $this->remember))) {
             RateLimiter::hit($this->throttleKey());
-            dd('oppa');
+
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+
         RateLimiter::clear($this->throttleKey());
+
         session()->regenerate();
-        // dd( session(), session('url.intended'));
+
         $this->redirect(
             session('url.intended', RouteServiceProvider::HOME),
             navigate: true
@@ -102,19 +107,11 @@ new #[Layout('layouts.guest')] class extends Component
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
                     {{ __('Forgot your password?') }}
                 </a>
-                @endif
+            @endif
 
-                <div class="">
-                    <x-primary-button class="ml-3">
-                        {{ __('Log in') }}
-                    </x-primary-button>
-                    <span class="ms-2" >or</span>
-                    <x-secondary-button class="ml-3">
-                        <a class="text-sm text-gray-500 hover:text-black rounded-md" href="{{ route('register') }}" wire:navigate>
-                            {{ __('Register') }}
-                        </a>
-                    </x-secondary-button>
-                </div>
+            <x-primary-button class="ml-3">
+                {{ __('Log in') }}
+            </x-primary-button>
         </div>
     </form>
 </div>

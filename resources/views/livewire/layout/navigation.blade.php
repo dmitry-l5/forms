@@ -13,6 +13,10 @@ new class extends Component
 
         $this->redirect('/', navigate: true);
     }
+    public function to_form(): void
+    {
+        $this->redirect(url('form'));
+    }
 }; ?>
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
@@ -51,6 +55,9 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
+                        <button wire:click="to_form" >
+                            to form page
+                        </button>
                         <x-dropdown-link :href="route('profile')" wire:navigate>
                             {{ __('Profile') }}
                         </x-dropdown-link>

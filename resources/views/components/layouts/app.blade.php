@@ -10,6 +10,7 @@
     <section>
         <div class="w-full bg-green-700">
             {{ $header ?? 'header' }}
+            
         </div>
     </section>
     <div class="">
