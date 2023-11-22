@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index');
 Route::get('/', function(){ return redirect('form');});
+Route::view('/test', 'test');
+Route::view('/pics', 'slides');
+//Route::get('pics', function(){ return view('slides');});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

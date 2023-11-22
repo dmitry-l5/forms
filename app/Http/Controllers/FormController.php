@@ -24,8 +24,8 @@ class FormController extends Controller
      */
     public function create(FormTemplate $template)
     {
-
-        return view( 'forms.create_form', compact('template') );
+        return view( 'slides', compact('template') );
+        //return view( 'forms.create_form', compact('template') );
     }
 
     /**
@@ -64,7 +64,9 @@ class FormController extends Controller
                     $result['header'] = $value;
                     break;
                 case 'checkbox_group':
-                    $value->result = clone $value->options;
+                    //dd($value);
+                    if(!isset($value->options)){ }
+                    $value->result = clone ($value->options ?? null);
                     foreach($value->result as $key => $option){$value->result->{$key} = 0;}
                     $result[$value->input_name ?? ''] = $value;
                     break;
