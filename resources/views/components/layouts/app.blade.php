@@ -6,28 +6,26 @@
     <title>{{ $title ?? 'Формы' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class=" text-lg">
-    <section>
-        <div class="w-full bg-green-700">
+<body class="text-lg min-h-full">
+    <div class="min-h-[100vh] flex flex-col justify-between">
+        <div class="w-full  bg-green-700">
             {{ $header ?? 'header' }}
             
         </div>
-    </section>
-    <div class="">
-        <section>
-
-        </section>
-        <main>
-            {{ $slot }}
-        </main>
-        <section>
-
-        </section>
-    </div>
-    <footer>
-        <div class="w-full bg-green-700">
+        <div class=" flex-grow flex flex-row">
+            <section>
+    
+            </section>
+            <main class="flex-grow">
+                {{ $slot }}
+            </main>
+            <section>
+                
+            </section>
+        </div>
+        <div class="w-full bg-green-700 h-full">
             {{ $footer ?? 'footer' }}
         </div>
-    </footer>
+    </div>
 </body>
 </html>

@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Auth\VerifyEmailController;
-
-use Livewire\Volt\Volt;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,42 +13,33 @@ use Livewire\Volt\Volt;
 |
 */
 
-
-//Volt::route('test', 'pages.test_folder.test');
-
-
+Route::view('/', 'index');
 Route::get('/', function(){ return redirect('form');});
+Route::view('/test', 'test');
+Route::view('/pics', 'slides');
+//Route::get('pics', function(){ return view('slides');});
+
+Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
 Route::get('form/create/{template}', [App\Http\Controllers\FormController::class, 'create']);
 Route::post('form/store/{template}', [App\Http\Controllers\FormController::class, 'store']);
-Route::get('form/{form}', [App\Http\Controllers\FormController::class, 'show']);
+Route::resource('form', App\Http\Controllers\FormController::class)->except(['create', 'store' ]);
 
-Volt::route('desk', 'pages.desk.index')
-->name('desk');
 
-Route::
-    // middleware("auth")->
-    prefix('/')->
-    group(function () {
-    Route::prefix('manage')->group(function(){
-    Route::resource('form_templates', App\Http\Controllers\FormTemplateController::class);
-    });
-    Route::resource('form', App\Http\Controllers\FormController::class)->except(['create', 'store' ]);
-
-    Route::view('/', 'index');
-    Route::view('dashboard', 'dashboard')
-        ->middleware(['auth', 'verified'])
-        ->name('dashboard');
-    
-    Route::view('profile', 'profile')
-        ->middleware(['auth'])
-        ->name('profile');
-
-});
-//Route::prefix('forms')->group(function(){
-//    Route::get('');
-//})
+    // Route::prefix('forms')->group(function(){
+    //     Route::get('');
+    // })
 //Route::get('forms', 'form_list');
 //Route::get('auth_forms', 'auth_form_list');
-//Route::get
+// Route::get
+Route::prefix('manage')->group(function(){
+    Route::resource('form_templates', App\Http\Controllers\FormTemplateController::class);
 
+});
 require __DIR__.'/auth.php';

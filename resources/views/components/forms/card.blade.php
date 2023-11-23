@@ -1,12 +1,8 @@
-<div {{ $attributes->merge(['class'=>'border border-black my-1']) }}>
-    <div class="">
-        {{ $title ?? '' }}
+<div {{ $attributes->merge(['class'=>'border border-black m-1']) }}>
+    <div>
+        {{ $slot }}
     </div>
-    <div class="">
-        {{ $description ?? ''}}
+    <div>
+        {{ $control ?? '' }}
     </div>
-    <div class="">
-        {{ $inputs ?? '' }}
-    </div>
-
 </div>
