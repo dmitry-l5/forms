@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('form_templates', function (Blueprint $table) {
             $table->id();
+            $table->string('alias_id')->unique();
             $table->integer('author_id');
             $table->string('title')->default('Заголовок');
             $table->mediumText('description');

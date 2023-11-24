@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'index');
+//Route::view('/', 'index');
 Route::get('/', function(){ return redirect('form');});
-Route::view('/test', 'test');
-Route::view('/pics', 'slides');
+Route::get('/worksheet/{form_id}', function(string $id){ return $id;});
+Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
+
 //Route::get('pics', function(){ return view('slides');});
 
 Route::view('dashboard', 'dashboard')

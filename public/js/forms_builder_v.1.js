@@ -60,8 +60,10 @@ function forms_builder(send_template_to, csrf){
                 btn_submit.onclick = (e)=>{e.preventDefault(); this.send_template(form)}; 
                 
                 node.append(btn_add);
+                
                 node.append(btn_preview);
                 node.append(btn_get_json);
+
                 node.append(btn_submit);
                 // node.innerHTML_ = 
                 // '<div class="d-flex"><div><button onclick="'+function(e){this.add_field(e);}+'">добавить поле</button></div><div><button onclick="window.builder.get_json();">предпросмотр</button></div><div><button type="submit" onclick="window.builder.save_template()">сохранить форму</button></div></div>';
@@ -92,13 +94,12 @@ function forms_builder(send_template_to, csrf){
                 "<option value='null'>тип поля</option>"
                 +"<option value='checkbox'>флаг: да/нет</option>"
                 +"<option value='checkbox_group'>группа флагов: да/нет </option>"
-                +"<option value='radio_group'>выбор из вариантов </option>"
-                // +"<option value='string'>строка</option>"
-                // +"<option value='textarea'>текст</option>"
-                // +"<option value='date'>дата</option>"
-                // +"<option value='files'>файлы</option>"
-                // +"<option value='number'>число</option>"
-                ;
+                +"<option value='radio'>выбор из вариантов </option>"
+                +"<option value='string'>строка</option>"
+                +"<option value='textarea'>текст</option>"
+                +"<option value='date'>дата</option>"
+                +"<option value='files'>файлы</option>"
+                +"<option value='number'>число</option>";
                 if(this.palette[data.type]){
                     select.value = data.type;
                 }
@@ -233,31 +234,6 @@ function forms_builder(send_template_to, csrf){
             viewer:()=>{
 
             },
-        },
-        radio_group:{
-            editor:(data)=>{
-                let node = this.palette.base.editor(data);
-                console.warn(node);
-                let options_panel = document.createElement('div');
-                options_panel.classList = 'options_panel';
-                let add_button = document.createElement('div');
-                add_button.classList = 'add_option_button';
-                let builder = this;
-                add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e, this); };
-                add_button.innerHTML = 
-                "<button>+ Добавить вариант</button>"
-                +""
-                +""
-                +""
-                +""
-                ;
-                node.append(options_panel);
-                options_panel.append(add_button);
-                return node;
-            },
-            viewer:()=>{
-
-            }
         },
         number:{
             editor:(data)=>{

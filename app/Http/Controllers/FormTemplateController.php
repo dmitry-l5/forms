@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FormTemplate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class FormTemplateController extends Controller
 {
@@ -48,11 +49,17 @@ class FormTemplateController extends Controller
         $obj = new \stdClass();
 
         $form->data_json = json_encode($obj);
+        $alias_id = '';
+        $limit = 101;
+        do{
+            $alias_id = Str::random(25);
+            $limit--;
+        }while($limit > 0 && FormTemplate::where('alias_id', $alias_id)->count() > 0);
+        $form->alias_id = $alias_id;
         $form->save();
         $form_data->aux->template_id =  $form->id;
         $form->data_json = json_encode($form_data);
         $form->save();
-
         return redirect(url('/manage/form_templates'));
     }
 

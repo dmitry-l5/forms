@@ -33,6 +33,7 @@ class FormController extends Controller
      */
     public function store(FormTemplate $template, Request $request)
     {
+
         // $validator = Validator::make($request->all(), [
         //     'form_data'=>['required','json'],
         // ]);
@@ -40,13 +41,54 @@ class FormController extends Controller
         //     return back()->withErrors($validator)->withInput();
         // }
         $validated = $request->all();// $validator->validate();
-        $data = $validated;
-        unset($data['_token']);
+        $inputs = array_filter(
+            json_decode($template->data_json)->items, 
+            function($item){
+          
+                return in_array($item->type, ['radio_group', 'checkbox_group', 'checkbox']);
+                // return !in_array($item->type, ['header']);
+            });
+            // dd($inputs);
+        $result = array();
+        array_map(function($item)use($validated, &$result){
+            switch($item->type){
+                case 'checkbox_group':
+                    $options = (array)($item->options ?? []);
+                    $options_result = [];
+                    array_walk(
+                        $options,
+                        function($option, $key)use(&$options_result, $validated, $item){
+                            $options_result[$key] = isset($validated[$item->input_name][$key])?true:false;
+                
+                        });
+                    $result[$item->input_name] = $options_result ;
+                    break;
+                case('checkbox'):
+                    if(isset($validated[$item->input_name]) && $validated[$item->input_name] == 'on'){
+                        $result[$item->input_name] = true ;
+                    }else{
+                        $result[$item->input_name] = false ;
+                    }
+                    break;
+                case('radio_group');
+                    if(isset($validated[$item->input_name])){
+                        $result[$item->input_name] = $validated[$item->input_name] ;
+                    }
+                    break;
+                default:
+                    $result[$item->input_name ?? $item->type_ ?? ''] = "not supported" ;
+                break;
+            }            
+        }, $inputs);
+
+        $data = (object)$result;
+        // dd(json_decode($template->data_json), $request->all(), $result);
+        //unset($data['_token']);
         $answer = new Answers();
         $answer->ip = $request->ip();
         $answer->userAgent = $request->userAgent();
         $answer->template_id = $template->id;
-        $answer->data = json_encode([$data]);
+        $answer->data = json_encode($data);
         $answer->additional_data = json_encode([]);
         $answer->save();
         return view('forms.thanks', []);
