@@ -1,3 +1,4 @@
+@props(['title', 'description'])
 <div >
     <div>string</div>
     {{ $title }}

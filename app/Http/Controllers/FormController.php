@@ -52,6 +52,14 @@ class FormController extends Controller
         $result = array();
         array_map(function($item)use($validated, &$result){
             switch($item->type){
+                case('checkbox'):
+                    if(isset($validated[$item->input_name]) && $validated[$item->input_name] == 'on'){
+                        $result[$item->input_name] = true ;
+                    }else{
+                        $result[$item->input_name] = false ;
+                    }
+                    break;
+                case('radio_group'):
                 case 'checkbox_group':
                     $options = (array)($item->options ?? []);
                     $options_result = [];
@@ -63,18 +71,11 @@ class FormController extends Controller
                         });
                     $result[$item->input_name] = $options_result ;
                     break;
-                case('checkbox'):
-                    if(isset($validated[$item->input_name]) && $validated[$item->input_name] == 'on'){
-                        $result[$item->input_name] = true ;
-                    }else{
-                        $result[$item->input_name] = false ;
-                    }
-                    break;
-                case('radio_group');
-                    if(isset($validated[$item->input_name])){
-                        $result[$item->input_name] = $validated[$item->input_name] ;
-                    }
-                    break;
+                // case('radio_group'):
+                //     if(isset($validated[$item->input_name])){
+                //         $result[$item->input_name] = $validated[$item->input_name] ;
+                //     }
+                //     break;
                 default:
                     $result[$item->input_name ?? $item->type_ ?? ''] = "not supported" ;
                 break;

@@ -22,7 +22,7 @@ class ResultController extends Controller
             return json_decode($answers->data);
         });
         $result = (object)[];     
-dd($form->items);
+// dd($form->items);
         array_walk($form->items, function($field, $key)use(&$result, $data){
             if(isset($field->input_name)){
                 $result->{$field->input_name} = [];
@@ -30,12 +30,17 @@ dd($form->items);
                 if(isset($field->options)){
                     $input_name = $field->input_name;
                     $result->{$input_name} = (object)[];
+                    
+
                     foreach($field->options as $name => $title){
+                        echo("   !!!   ".$input_name."</br>");
                         $result->{$input_name}->{$name} = 0;
                         $count = 0;
                         $custom = array();
                         $answers = $data->toArray();
                         array_walk($answers, function($item)use(&$count, $input_name, $name, &$custom){
+                            echo("   ***   ".$input_name."</br>");
+                          //  echo("   oppa!   ".($item->{$input_name}->{$name} ?? dd($item))."</br>");
                             if($item->{$input_name}->{$name} ?? false){
                                 echo("<br>mark : ".$count."<br>");
                                 if(is_bool($item->{$input_name}->{$name}) && $item->{$input_name}->{$name}){
@@ -51,13 +56,16 @@ dd($form->items);
                 }elseif($field->type == 'checkbox'){
                     $count = 0;
                     $answers = $data->toArray();
-                    array_walk($answers, function($input, $key)use(&$count){
-
+                    array_walk($answers, function($input, $key)use(&$count, $field){
+                        if($input->{$field->input_name ?? false}){
+                            $count++;
+                        };
+                        // dd($count, $input, $field);
                     });
                     $result->{$field->input_name} = $count;
-                    dd('else',$result,  $field, $field->input_name, $key);
+                    // dd('else',$result,  $field, $field->input_name, $key);
                 }else{
-                    dd('hello');
+                    dd('hello errors!');
                 }
             }else{
                 echo($field->type."</br>");
