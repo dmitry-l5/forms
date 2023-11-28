@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.guest>
     @php
         $data = json_decode($template->data_json);
         //dd($data);
@@ -8,7 +8,7 @@
     @endphp
 
     <div  class='' x-data="{ index : 0, index_max : {{ $count }} }">
-        <form method="post" action="{{ url('form/store/'.$template->id) }}" >
+        <form method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->alias_id) }}" >
             @csrf
             @foreach ($data->items as $item )
             <x-forms.card x-show="index == {{ $index }}" csrf='@csrf' url=''>
@@ -66,9 +66,4 @@
 
         </form>
     </div>
-
-
-
-    
-
-</x-layouts.app>
+</x-layouts.guest>

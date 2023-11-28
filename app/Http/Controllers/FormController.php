@@ -31,8 +31,9 @@ class FormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FormTemplate $template, Request $request)
+    public function store(string $form_id, Request $request)
     {
+        $template = FormTemplate::where(['alias_id'=>$form_id])->first();
 
         // $validator = Validator::make($request->all(), [
         //     'form_data'=>['required','json'],

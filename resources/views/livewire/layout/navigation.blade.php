@@ -6,12 +6,12 @@ new class extends Component
 {
     public function logout(): void
     {
-        auth()->guard('web')->logout();
-
+        //auth()->guard('web')->logout();
+        Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
 
-        $this->redirect('/', navigate: true);
+        $this->redirect(url('/'), navigate: true);
     }
     public function to_form(): void
     {

@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Формы' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 <body class="text-lg min-h-full">
     <div class="min-h-[100vh] flex flex-col justify-between">
         <div class="w-full  bg-green-700">
-            <livewire:layout.auth_panel />
             {{ $header ?? 'header' }}
             
         </div>
@@ -28,5 +28,6 @@
             {{ $footer ?? 'footer' }}
         </div>
     </div>
+    @livewireScripts
 </body>
 </html>

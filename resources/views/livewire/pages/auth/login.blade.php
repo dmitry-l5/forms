@@ -36,7 +36,8 @@ new #[Layout('layouts.guest')] class extends Component
         session()->regenerate();
         // dd( session(), session('url.intended'));
         $this->redirect(
-            session('url.intended', RouteServiceProvider::HOME),
+            // session('url.intended', RouteServiceProvider::HOME),
+            session('url.intended', url('cabinet')),
             navigate: true
         );
     }

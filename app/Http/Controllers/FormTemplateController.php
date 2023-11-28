@@ -15,8 +15,9 @@ class FormTemplateController extends Controller
      */
     public function index()
     {
-        $templates = FormTemplate::orderBy('created_at', 'DESC')->paginate(4);
-        return view('forms_manage.templates_list', compact('templates'));
+        return redirect(url('cabinet'));
+        // $templates = FormTemplate::orderBy('created_at', 'DESC')->paginate(4);
+        // return view('forms_manage.templates_list', compact('templates'));
     }
 
     /**

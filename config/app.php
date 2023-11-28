@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'form_prefix' => env('FORM_PREFIX', 'worksheet'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -83,7 +85,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
