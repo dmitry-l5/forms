@@ -13,8 +13,9 @@ class ResultController extends Controller
         if(!$template){return abort(404);}
         // Answers::where()->get();
         $result = $this->collect_answers($template);
-        dd('after collect data',$template, $template_id, $viewer_id);
-        return null;
+        //dd('after collect data',$template, $template_id, $viewer_id);
+        // $form = json_decode($template->data_json, false);
+        return view('forms.result', compact('result'));
     }
     private function collect_answers($template){
         $form = json_decode($template->data_json);
@@ -26,23 +27,19 @@ class ResultController extends Controller
         array_walk($form->items, function($field, $key)use(&$result, $data){
             if(isset($field->input_name)){
                 $result->{$field->input_name} = [];
-                echo($field->input_name."</br>");
+                // echo($field->input_name."</br>");
                 if(isset($field->options)){
                     $input_name = $field->input_name;
                     $result->{$input_name} = (object)[];
-                    
-
                     foreach($field->options as $name => $title){
-                        echo("   !!!   ".$input_name."</br>");
+                        // echo("   !!!   ".$input_name."</br>");
                         $result->{$input_name}->{$name} = 0;
                         $count = 0;
                         $custom = array();
                         $answers = $data->toArray();
                         array_walk($answers, function($item)use(&$count, $input_name, $name, &$custom){
-                            echo("   ***   ".$input_name."</br>");
-                          //  echo("   oppa!   ".($item->{$input_name}->{$name} ?? dd($item))."</br>");
                             if($item->{$input_name}->{$name} ?? false){
-                                echo("<br>mark : ".$count."<br>");
+                                // echo("<br>mark : ".$count."<br>");
                                 if(is_bool($item->{$input_name}->{$name}) && $item->{$input_name}->{$name}){
                                     $count++;
                                 }else{
@@ -51,7 +48,7 @@ class ResultController extends Controller
                             }
                         });
                         $result->{$field->input_name}->{$name} = $count;
-                        echo("   -   ".$name."</br>");
+                        // echo("   -   ".$name."</br>");
                     }
                 }elseif($field->type == 'checkbox'){
                     $count = 0;
@@ -65,15 +62,37 @@ class ResultController extends Controller
                     $result->{$field->input_name} = $count;
                     // dd('else',$result,  $field, $field->input_name, $key);
                 }else{
-                    dd('hello errors!');
+                    dd('error');
                 }
             }else{
-                echo($field->type."</br>");
+                // echo($field->type."</br>");
             }
         });
-        
-        dd($result, $form->items, $data);
-       
-        return '';
+        $form_items = array_map(function($item)use($result){
+            if(
+                isset($item->input_name) &&
+                ($result->{$item->input_name} ?? false)
+            ){
+                if(isset($item->options)){
+                    $item->result = (object)[];
+                    foreach($item->options as $name=>$option){
+                        $item->result->{$option} = $result->{$item->input_name}->{$name};
+                        //  echo($name.'   :::   '.$option.'<br>');
+                    }
+            
+                }else{
+                    $item->result = (object)[ $item->title => $result->{$item->input_name}]; 
+                }
+                $item->result_raw = $result->{$item->input_name};
+            }
+            return $item;
+        }, $form->items );
+        $result_form = (object)[
+            'data'=>(object)['template_id'=>$template->id, 'count'=>count($data)],
+            'items'=>$form_items,
+        ];
+        // dd($result_form, $form_items, $result);
+
+        return $result_form;
     }
 }

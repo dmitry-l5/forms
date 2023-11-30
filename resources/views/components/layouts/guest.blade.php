@@ -7,13 +7,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="text-lg min-h-full">
-    <div class="min-h-[100vh] flex flex-col justify-between">
-        <div class="w-full  bg-green-700">
-            {{ $header ?? 'header' }}
-            
+<body class="text-lg w-full ">
+    <div class="min-h-[100vh] flex flex-col justify-between w-auto">
+        <div class="w-full">
+            <div class="min-h-[48px] bg-slate-200 border-b-2 border-black text-zinc-700 ">
+                
+            </div>
+            <div class="">
+                {{ $header ?? '' }}
+            </div>
         </div>
-        <div class=" flex-grow flex flex-row">
+        <div class=" flex-grow flex flex-row overflow-x-scroll">
             <section>
     
             </section>
@@ -24,8 +28,13 @@
                 
             </section>
         </div>
-        <div class="w-full bg-green-700 h-full">
-            {{ $footer ?? 'footer' }}
+        <div class="w-full bg-slate-200  ">
+            <div class="min-h-[48px] border-t-2 border-black">
+
+            </div>
+            <div class="">
+                {{ $footer ?? '' }}
+            </div>
         </div>
     </div>
     @livewireScripts

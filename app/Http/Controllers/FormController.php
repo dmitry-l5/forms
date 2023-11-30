@@ -61,6 +61,16 @@ class FormController extends Controller
                     }
                     break;
                 case('radio_group'):
+                    $options = (array)($item->options ?? []);
+                    $options_result = [];
+                    array_walk(
+                        $options,
+                        function($option, $key)use(&$options_result, $validated, $item){
+                            // dd($validated);
+                            $options_result[$key] = ((isset($validated[$item->input_name]))&&($validated[$item->input_name] == $key))?true:false;
+                        });
+                    $result[$item->input_name] = $options_result ;
+                    break;
                 case 'checkbox_group':
                     $options = (array)($item->options ?? []);
                     $options_result = [];
@@ -84,7 +94,7 @@ class FormController extends Controller
         }, $inputs);
 
         $data = (object)$result;
-        // dd(json_decode($template->data_json), $request->all(), $result);
+         //dd(json_decode($template->data_json), $request->all(), $result);
         //unset($data['_token']);
         $answer = new Answers();
         $answer->ip = $request->ip();
