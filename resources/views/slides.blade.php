@@ -8,7 +8,7 @@
     @endphp
 
     <div  class='h-full p-4 ' x-data="{ index : 0, index_max : {{ $count }} }">
-        <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->alias_id) }}" >
+        <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->alias_id) }}" id='worksheet' >
             @csrf
             @foreach ($data->items as $item )
             <x-forms.card x-show="index == {{ $index }}" csrf='@csrf' url=''>
@@ -27,7 +27,14 @@
                         </x-forms.base>
                         <script>
                             function {{ $item->input_name }}_validate(){
-                                console.warn('oppa --- '+{{ $item->input_name }});
+                                for(var pair of (new FormData(worksheet)).entries()){
+                                    if(pair[0].startsWith('{{$item->input_name}}')){
+                                        return;
+                                    }
+                                }
+                                document.dispatchEvent(new CustomEvent(''))
+                                //.forEach(function(item, index, arr){console.log(item);});
+                                console.warn('oppa --- '+'{{ $item->input_name }}');
                                 return true;
                             }
                         </script>
@@ -61,9 +68,14 @@
                     </div>
                 </x-slot:counter>
                 <x-slot:control class="text-center">
+
+               
                     <x-forms.button_2 x-show="index > 0"  x-on:click="(e)=>{e.preventDefault(); index--;}">Назад</x-forms.button_2>
                     <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); index++;}">Начать</x-forms.button_2>
-                    <x-forms.button_2 x-show="index > 0 && index < index_max - 1"  x-on:click="(e)=>{e.preventDefault(); if(typeof({{ $item->input_name ?? '' }}_validate) == 'function'){if({{ $item->input_name }}_validate()){index++;}}else{index++;}; ;}">Следующий</x-forms.button_2>
+                    @php
+                        $input_name = isset($item->input_name)?$item->input_name:null;
+                    @endphp
+                    <x-forms.button_2 x-show="index > 0 && index < index_max - 1"  x-on:click="(e)=>{e.preventDefault(); if({{$input_name?'true':'false'}} && typeof({{ $input_name }}_validate) == 'function'){ if({{ $input_name.'_validate()' }}){index++;}}else{index++;} }">Следующий</x-forms.button_2>
                     <x-forms.button_2 type="submit" x-show="index == index_max - 1" class="">Завершить</x-forms.button_2>
 
                 </x-slot:control>
