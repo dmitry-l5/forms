@@ -1,6 +1,6 @@
 
-<!-- @vite('resources/js/forms_builder.js') -->
-<script src="{{ asset('js/forms_builder.js') }}"></script> 
+<script src="{{ Vite::asset('resources/js/forms_builder.js') }}"></script> 
+<!-- <script src="{{ asset('js/forms_builder.js') }}"></script>  -->
 <x-layouts.app>
     <div class=" rounded mt-3 p-3 mp-3">
         <script> 

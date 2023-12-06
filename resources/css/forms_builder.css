@@ -19,16 +19,15 @@
 .delete_button{
     text-align: center;
     color:whitesmoke;
-    background-color: brown;
+    background-color: rgb(212, 111, 111);
     padding: 2px 15px;
-
-    border: 1px solid black;
+    border: 1px solid gray;
 }
 .delete_button:hover{
     background-color: red;
 }
 .forms_builder{
-    background-color:blanchedalmond;
+    background-color:rgb(255, 255, 255);
 }
 .form_header{
     text-align: center;
@@ -62,8 +61,46 @@ width: 100%;
 
 
 .options_panel{
-    border: 3px dotted black;
+    margin: 10px;
+}
+.add_option_button{
+    color: aliceblue;
+    text-align: end;
 }
 .add_option_button > button{
+    padding: 10px;
     background-color: cornflowerblue;
+}
+
+.field_backplane{
+    border: 3px gray double;
+    padding: 10px 5px;
+    margin: 10px 0px;
+    border-radius: 10px;
+    background-color: rgb(230, 230, 230);
+}
+.field_header{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.option_container{
+    padding-top: 10px;
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: space-between;
+}
+
+.option_container > :nth-child(1) {
+    padding-right: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.option_container > :nth-last-child(1){
+    display: flex;
+    align-items: center;
+}
+.option_container .delete_button{
+   
 }

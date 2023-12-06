@@ -77,16 +77,17 @@ function forms_builder(send_template_to, csrf){
             editor:(data)=>{
                 let node = document.createElement('div');
                 node.setAttribute('debug', 'select');
-                node.classList = 'type_field_select';
+                node.classList.add('type_field_select');
                 if(data.type === 'header'){return null;}
                 if(data.type === 'form_title'){return null;}
-                if(!this.palette[data.type]){ console.warn('тип поля - ' + data.type + ' не поддерживается');/* return null;*/}
+                if(!this.palette[data.type]){ 
+                    console.warn('тип поля - ' + data.type + ' не поддерживается');
+                    /* return null;*/
+                }
                 let select = document.createElement('select');
                 select.setAttribute('worksheet_field', '');
                 select.name = 'type';
                 select.classList = 'form-control my-2';
-                //alert(data.type);
-                
                 select.onchange = (e)=>{e.preventDefault(); this.change_type(e)};
                 select.innerHTML = 
                 "<option value='null'>тип поля</option>"
@@ -105,7 +106,7 @@ function forms_builder(send_template_to, csrf){
                 node.append(select);
                 let button = document.createElement('button');
                 button.onclick = (e)=>{e.preventDefault(); this.remove_field(e)};
-                button.classList = 'delete_button';
+                button.classList.add('delete_button');
                 button.innerHTML = 'удалить';
                 node.append(button);
                 return node;
@@ -132,7 +133,7 @@ function forms_builder(send_template_to, csrf){
                 let node = document.createElement('div');
                 node.id = data.id;
                 node.innerHTML = 
-                '<div class="d-flex flex-column">'
+                '<div class="field_header">'
                 +'<input worksheet_field type="hidden" name="field_type" value = "' + data.type + '">'
                 +'<label class="helios my-2" for="header_' + data.id + '">Заголовок</label>'
                 +'<input worksheet_field type="hidden" name="input_name" value="'+ data.input_name +'">'
@@ -214,9 +215,9 @@ function forms_builder(send_template_to, csrf){
                 let node = this.palette.base.editor(data);
                 console.warn(node);
                 let options_panel = document.createElement('div');
-                options_panel.classList = 'options_panel';
+                options_panel.classList.add('options_panel');
                 let add_button = document.createElement('div');
-                add_button.classList = 'add_option_button';
+                add_button.classList.add('add_option_button');
                 let builder = this;
                 add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e, this); };
                 add_button.innerHTML = 
@@ -304,9 +305,12 @@ function forms_builder(send_template_to, csrf){
         let options_panel = e.target.parentNode.parentNode;
         let option_container = document.createElement('div');
         option_container.id = 'container_' + option_id;
-        option_container.innerHTML = 
-        "<label for='"+option_id+"'>текст поля</label>"
+        option_container.classList.add('option_container');
+        option_container.innerHTML =
+        "<div>" 
+        +"<label for='"+option_id+"'>текст поля</label>"
         +"<input type='text' name='"+option_id+"' id="+option_id+" option>"
+        +"</div>" 
         +""
         +""
         ;
@@ -440,25 +444,17 @@ function forms_builder(send_template_to, csrf){
         }
         this.id_counter = data.aux.id_counter;
         this.template_id = data.aux.template_id ?? -1;
-        console.warn('data.aux.template_id');
-        console.warn(data.aux.template_id);
+
         data.items.forEach((item, index, arr)=>{
-            // console.error(index);
-            // console.error(item);
             this.add_field(null, form, item)
         });
 
         let control = this.palette.control.editor(form);
         form.after(control);
-        // console.log(this.palette.form.viewer(12358556));
     };
     this.change_type = (e)=>{
         let base = e.target.parentNode.parentNode;
         base.lastChild.remove();
-        // item.type = e.target.value;
-        // item.input_name = this.get_id('input_');
-        // item.id = this.get_id('base_');
-        // let inputs = this.palette[e.target.value].editor(item);
         let item = this.get_empty_item(e.target.value);
         let inputs = this.create_inputs(item);
         base.append(inputs);
@@ -473,29 +469,15 @@ function forms_builder(send_template_to, csrf){
         return document.createElement('div');
     }
     this.add_field = (event, form, item = null)=>{
-        // console.log('add_field');
-        // console.log('event = ');
-        // console.log(event);
-        // console.log('form = ');
-        // console.log(form);
-        // console.log('item = ');
-        // console.log(item);
         if(item){ 
         }else{
-            // item = {type:'new'};
             item = this.get_empty_item();
         }
         let board = document.createElement('div');
-        board.classList = 'my-2 border-bottom border-dark  pb-3';
+
+        board.classList.add('field_backplane');
         board.setAttribute('debug', 'field_panel');
         let select = this.palette.select.editor(item);
-
-        // let inputs = null;
-        // if(this.palette[item.type]){
-        //     inputs = this.palette[item.type].editor(item);
-        // }else{
-        //     inputs = this.palette.not_supported.editor(item);
-        // }
         let inputs = this.create_inputs(item);
         if(select){
                 board.append(select);
