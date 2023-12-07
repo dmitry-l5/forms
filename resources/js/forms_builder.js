@@ -40,28 +40,28 @@ function forms_builder(send_template_to, csrf){
         control:{
             editor:(form)=>{
                 let node = document.createElement('div');
-                node.classList = 'd-flex';
+                node.classList.add('control_panel');
                 node.setAttribute('debug', 'control');
                 let btn_add = document.createElement('button');
-                btn_add.innerHTML = 'добавить поле';
-                btn_add.classList = 'button button_add mr-5';
+                btn_add.innerHTML = '+ Добавить поле';
+                btn_add.classList.add('add_button');
                 btn_add.onclick = (e)=>{e.preventDefault(); this.add_field(e,form)};
 
-                let btn_preview = document.createElement('button');
-                btn_preview.innerHTML = 'предпросмотр';
-                let btn_get_json = document.createElement('button');
-                btn_get_json.classList = 'button button_gray mr-5';
-                btn_get_json.innerHTML = 'получить json';
-                btn_get_json.onclick = (e)=>{e.preventDefault(); this.get_json(form);};
+                // let btn_preview = document.createElement('button');
+                // btn_preview.innerHTML = 'предпросмотр';
+                // let btn_get_json = document.createElement('button');
+                // btn_get_json.classList = 'button button_gray mr-5';
+                // btn_get_json.innerHTML = 'получить json';
+                // btn_get_json.onclick = (e)=>{e.preventDefault(); this.get_json(form);};
 
                 let btn_submit = document.createElement('button');
-                btn_submit.classList = 'button button_ok mr-5';
-                btn_submit.innerHTML = 'сохранить форму';
+                btn_submit.classList.add('submit_button');
+                btn_submit.innerHTML = 'Сохранить форму';
                 btn_submit.onclick = (e)=>{e.preventDefault(); this.send_template(form)}; 
                 
                 node.append(btn_add);
-                node.append(btn_preview);
-                node.append(btn_get_json);
+                // node.append(btn_preview);
+                // node.append(btn_get_json);
                 node.append(btn_submit);
                 // node.innerHTML_ = 
                 // '<div class="d-flex"><div><button onclick="'+function(e){this.add_field(e);}+'">добавить поле</button></div><div><button onclick="window.builder.get_json();">предпросмотр</button></div><div><button type="submit" onclick="window.builder.save_template()">сохранить форму</button></div></div>';
@@ -527,14 +527,10 @@ function forms_builder(send_template_to, csrf){
         json.value = result_json;
         form.append(json);
         form.submit();
-
         return;
-
-
         // let new_form = new FormData();
         // new_form.append('_token', this.csrf);
         // new_form.append('result_json', result_json);
         // let xhr = XMLHttpRequest();
-
     };
 };

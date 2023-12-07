@@ -104,3 +104,31 @@ width: 100%;
 .option_container .delete_button{
    
 }
+.control_panel{
+    display: flex;
+    padding: 10px 0;
+    justify-content: space-between;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+    /* background-color: blueviolet; */
+}
+.control_panel .add_button,
+.control_panel .submit_button{
+    border: 1px gray solid;
+    padding: 5px 10px;
+    color: white;
+}
+.control_panel .add_button{
+    
+    background-color: hwb(219 40% 7%);
+}
+.control_panel .add_button:hover{
+    background-color: hwb(219 20% 7%);
+    
+}
+.control_panel .submit_button{
+    background-color: hwb(115 40% 25%);
+}
+.control_panel .submit_button:hover{
+    background-color: hwb(115 20% 25%);
+}

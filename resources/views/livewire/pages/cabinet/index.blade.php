@@ -15,15 +15,19 @@ new
 
         public function with():array{
             return [
-                'forms'=>Gate::allows('create_forms')?FormTemplate::where(['author_id'=>Auth::user()->id])->paginate(3):[],
+                'forms'=>Gate::allows('create_forms')?FormTemplate::where(['author_id'=>Auth::user()->id])->paginate(10):[],
             ];
         }
 }; ?>
-<div class="">
+<div class=" m-3 p-3">
     @if (Gate::allows('create_forms'))
-    <x-forms.link_button_1 href="{{ url('templates/create') }}">{{ __('Create form') }}</x-forms.link_button_1>
+    <div class="flex justify-start">
+        <x-forms.link_button_1 href="{{ url('templates/create') }}" class="border border-neutral-500 p-3 m-3  bg-blue-500 text-white">{{ __('Create form') }}</x-forms.link_button_1>
+    </div>
         {{-- list you worksheets --}}
-        {{ $forms->links() }}
+        <div class="mb-5">
+            {{ $forms->links() }}
+        </div>
         <table class="w-full border-collapse border border-slate-500 overflow-scroll">
             <thead>
                 <tr>
@@ -41,7 +45,7 @@ new
                     </td>
                     <td class="border border-slate-700">
                         <a href="{{ url(config('app.form_prefix').'/'.$form->alias_id) }}">
-                            URL : {{ url(config('app.form_prefix').'/'.$form->alias_id) }}
+                            {{ url(config('app.form_prefix').'/'.$form->alias_id) }}
                         </a>
                     </td>
                     <td class="border border-slate-700">

@@ -10,8 +10,11 @@
 <body class="text-lg w-full ">
     <div class="min-h-[100vh] flex flex-col justify-between w-auto">
         <div class="w-full">
-            <div class="min-h-[48px] bg-slate-200 border-b-2 border-black text-zinc-700 ">
-                
+            <div class="min-h-[48px] bg-slate-200 border-b-2 border-black text-zinc-700  flex justify-between items-center  ">
+                @auth
+                    <x-home title="{{ __('Home page') }}"></x-home>  
+                    <livewire:layout.auth_panel />
+                @endauth
             </div>
             <div class="">
                 {{ $header ?? '' }}
