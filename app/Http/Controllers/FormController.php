@@ -34,6 +34,22 @@ class FormController extends Controller
     public function store(string $form_id, Request $request)
     {
         $template = FormTemplate::where(['alias_id'=>$form_id])->first();
+      
+        
+        // if(config('app.ip_check')){
+        //     $answer = Answers::where(['template_id'=>$template->id, 'ip'=>$request->ip()])->first();
+        //     if($answer){
+        //         return view('forms.thanks', []);
+        //     }
+        // }
+        if(config('app.cookie_check')){
+
+            // if($answer){
+            //     return view('forms.thanks', []);
+            // }
+        }
+        //dd(config('app.ip_check'), config('app.coockie_check'));
+
 
         // $validator = Validator::make($request->all(), [
         //     'form_data'=>['required','json'],
@@ -45,7 +61,6 @@ class FormController extends Controller
         $inputs = array_filter(
             json_decode($template->data_json)->items, 
             function($item){
-          
                 return in_array($item->type, ['radio_group', 'checkbox_group', 'checkbox']);
                 // return !in_array($item->type, ['header']);
             });
@@ -102,8 +117,11 @@ class FormController extends Controller
         $answer->template_id = $template->id;
         $answer->data = json_encode($data);
         $answer->additional_data = json_encode([]);
-        $answer->save();
-        return view('forms.thanks', []);
+        // $answer->save();
+
+        dd(cookie('filled_form'));
+    $cookie = cookie('filled_form', '$template->alias_id', 60*60*24*365*1  );
+    return response()->view('forms.thanks', [])->cookie($cookie);
     }
 
     /**
