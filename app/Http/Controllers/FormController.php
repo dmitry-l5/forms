@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FormTemplate;
 use App\Models\Answers;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cookie;
 
 
 class FormController extends Controller
@@ -22,35 +23,51 @@ class FormController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(FormTemplate $template)
+    public function create(string $form_id)
     {
-        return view( 'slides', compact('template') );
-        //return view( 'forms.create_form', compact('template') );
+        // dd(Cookie::get());
+        $template = FormTemplate::where(['alias_id'=>$form_id])->first();
+        if( $template ){
+            if($this->check_cookie_form($template)){
+                return view('forms.thanks', ['message'=>'create.check_cookie']);
+            }
+            return view( 'slides', compact('template'));
+        }
+        return abort(404);
     }
-
+    //return true if form alias_id exist in cookies, another false and array of form from cookie
+    private function check_cookie_form($template, &$result_arr = ['oppa']):?bool{
+        //Cookie::expire('filled_form');
+        $cookie_arr = [];
+        if(Cookie::has('filled_form')){
+            $cookie_arr = unserialize(Cookie::get('filled_form' ));
+        }
+        if(in_array($template->alias_id, $cookie_arr)){
+            return true;
+        }
+        $cookie_arr[] = $template->alias_id;
+        $result_arr = array_merge($result_arr, $cookie_arr);
+       // dd($cookie_arr, Cookie::get('filled_form'));
+        return false;
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(string $form_id, Request $request)
     {
         $template = FormTemplate::where(['alias_id'=>$form_id])->first();
-      
-        
-        // if(config('app.ip_check')){
-        //     $answer = Answers::where(['template_id'=>$template->id, 'ip'=>$request->ip()])->first();
-        //     if($answer){
-        //         return view('forms.thanks', []);
-        //     }
-        // }
-        if(config('app.cookie_check')){
-
-            // if($answer){
-            //     return view('forms.thanks', []);
-            // }
+        $filled_form_cookie_arr = [];
+        if(config('app.ip_check')){
+            $answer = Answers::where(['template_id'=>$template->id, 'ip'=>$request->ip()])->first();
+            if($answer){
+                return view('forms.thanks', []);
+            }
         }
-        //dd(config('app.ip_check'), config('app.coockie_check'));
-
-
+        if(config('app.cookie_check')){
+            if($this->check_cookie_form($template, $filled_form_cookie_arr)){
+                return view('forms.thanks', ['message'=>'store.check_cookie']);
+            };
+        }
         // $validator = Validator::make($request->all(), [
         //     'form_data'=>['required','json'],
         // ]);
@@ -64,7 +81,6 @@ class FormController extends Controller
                 return in_array($item->type, ['radio_group', 'checkbox_group', 'checkbox']);
                 // return !in_array($item->type, ['header']);
             });
-            // dd($inputs);
         $result = array();
         array_map(function($item)use($validated, &$result){
             switch($item->type){
@@ -81,7 +97,6 @@ class FormController extends Controller
                     array_walk(
                         $options,
                         function($option, $key)use(&$options_result, $validated, $item){
-                            // dd($validated);
                             $options_result[$key] = ((isset($validated[$item->input_name]))&&($validated[$item->input_name] == $key))?true:false;
                         });
                     $result[$item->input_name] = $options_result ;
@@ -97,31 +112,20 @@ class FormController extends Controller
                         });
                     $result[$item->input_name] = $options_result ;
                     break;
-                // case('radio_group'):
-                //     if(isset($validated[$item->input_name])){
-                //         $result[$item->input_name] = $validated[$item->input_name] ;
-                //     }
-                //     break;
                 default:
                     $result[$item->input_name ?? $item->type_ ?? ''] = "not supported" ;
                 break;
             }            
-        }, $inputs);
-
+        }, $inputs);       
         $data = (object)$result;
-         //dd(json_decode($template->data_json), $request->all(), $result);
-        //unset($data['_token']);
         $answer = new Answers();
         $answer->ip = $request->ip();
         $answer->userAgent = $request->userAgent();
         $answer->template_id = $template->id;
         $answer->data = json_encode($data);
         $answer->additional_data = json_encode([]);
-        // $answer->save();
-
-        dd(cookie('filled_form'));
-    $cookie = cookie('filled_form', '$template->alias_id', 60*60*24*365*1  );
-    return response()->view('forms.thanks', [])->cookie($cookie);
+        $answer->save();
+        return response(view('forms.thanks', ['message'=>'end']))->withCookie(Cookie::make('filled_form', serialize($filled_form_cookie_arr), config('app.form_expire')));
     }
 
     /**
@@ -136,7 +140,6 @@ class FormController extends Controller
                     $result['header'] = $value;
                     break;
                 case 'checkbox_group':
-                    //dd($value);
                     if(!isset($value->options)){ }
                     $value->result = clone ($value->options ?? null);
                     foreach($value->result as $key => $option){$value->result->{$key} = 0;}
@@ -161,12 +164,10 @@ class FormController extends Controller
                             $result->{$key}->result->{$input_name} ?? $result->{$key}->result->{$input_name} = 0;
                             $result->{$key}->result->{$input_name} += 1;
                         }
-                        // $result->{$key}->
                         break;
                     case 'date':
                     case 'number':
                     case 'string':
-                        // dd($result->{$key}->result, $value);
                         $result->{$key}->result ?? array();
                         $result->{$key}->result[] = $value;
                         break;

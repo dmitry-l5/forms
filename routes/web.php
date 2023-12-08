@@ -14,14 +14,15 @@ use App\Models\FormTemplate;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/worksheet/{form_id}', function(string $id){ 
-    $template = FormTemplate::where(['alias_id'=>$id])->first();
-    if( $template ){
-        return view( 'slides', compact('template'));
-    }else{
-        return abort(404);
-    }
-});
+// Route::get('/worksheet/{form_id}', function(string $id){ 
+//     $template = FormTemplate::where(['alias_id'=>$id])->first();
+//     if( $template ){
+//         return view( 'slides', compact('template'));
+//     }else{
+//         return abort(404);
+//     }
+// });
+Route::get('/worksheet/{form_id}', [App\Http\Controllers\FormController::class, 'create']);
 Route::post('worksheet/store/{form_id}', [App\Http\Controllers\FormController::class, 'store']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
 

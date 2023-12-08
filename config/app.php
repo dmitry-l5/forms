@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 return [
     'ip_check'=>env('FORM_IP_CHECK', false),
     'cookie_check'=>env('FORM_COOKIE_CHECK', false),
-
+    'form_expire'=>env('FORM_EXPIRE', 60*24*365),
     'form_prefix' => env('FORM_PREFIX', 'worksheet'),
 
     /*
