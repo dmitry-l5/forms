@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Livewire\Volt\Volt;
 use App\Models\FormTemplate;
+use Illuminate\Support\Facades\Cookie;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +24,10 @@ use App\Models\FormTemplate;
 //         return abort(404);
 //     }
 // });
+
+Route::get('expire', function(){
+    Cookie::expire('filled_form');
+});
 Route::get('/worksheet/{form_id}', [App\Http\Controllers\FormController::class, 'create']);
 Route::post('worksheet/store/{form_id}', [App\Http\Controllers\FormController::class, 'store']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);

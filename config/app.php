@@ -8,6 +8,7 @@ return [
     'cookie_check'=>env('FORM_COOKIE_CHECK', false),
     'form_expire'=>env('FORM_EXPIRE', 60*24*365),
     'form_prefix' => env('FORM_PREFIX', 'worksheet'),
+    'need_email_verification' => env('NEED_EMAIL_VERIFICATION', true),
 
     /*
     |--------------------------------------------------------------------------
