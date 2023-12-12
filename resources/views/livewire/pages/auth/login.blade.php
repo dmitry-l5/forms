@@ -9,7 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new #[Layout('layouts.blank')] class extends Component
 {
     #[Rule(['required', 'string', 'email'])]
     public string $email = '';
@@ -80,7 +80,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password">Пароль</x-input-label>
 
             <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
                             type="password"
@@ -93,29 +93,21 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember" class="inline-flex items-center">
-                <input wire:model="remember" id="remember" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                <input wire:model="remember" id="remember" type="checkbox" class=" border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                <span class="ml-2 text-sm text-gray-600">Запомнить меня</span>
             </label>
         </div>
-
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-                @endif
-
-                <div class="">
-                    <x-primary-button class="ml-3">
-                        {{ __('Log in') }}
-                    </x-primary-button>
-                    <span class="ms-2" >or</span>
-                    <x-secondary-button class="ml-3">
-                        <a class="text-sm text-gray-500 hover:text-black rounded-md" href="{{ route('register') }}" wire:navigate>
-                            {{ __('Register') }}
-                        </a>
-                    </x-secondary-button>
-                </div>
+            <a class=" underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
+                Забыли пароль?
+            </a>
+            @endif
+            <x-buttons.primary class="ml-auto">Вход</x-buttons.primary>
+            <span class="ms-2 me-2" >или</span>
+            <x-buttons.secondary>
+                <a class="" href="{{ route('register') }}" wire:navigate>Регистрация</a>
+            </x-buttons.secondary>
         </div>
     </form>
 </div>

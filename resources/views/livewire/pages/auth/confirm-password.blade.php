@@ -6,7 +6,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new #[Layout('layouts.blank')] class extends Component
 {
     #[Rule(['required', 'string'])]
     public string $password = '';
@@ -54,9 +54,9 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button>
+            <x-buttons.primary>
                 {{ __('Confirm') }}
-            </x-primary-button>
+            </x-buttons.primary>
         </div>
     </form>
 </div>

@@ -9,7 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new #[Layout('layouts.blank')] class extends Component
 {
     #[Locked]
     public string $token = '';
@@ -93,9 +93,9 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+            <x-buttons.primary>
+                Сбросить пароль
+            </x-buttons.primary>
         </div>
     </form>
 </div>

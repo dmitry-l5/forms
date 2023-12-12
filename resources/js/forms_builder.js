@@ -534,3 +534,5 @@ function forms_builder(send_template_to, csrf){
         // let xhr = XMLHttpRequest();
     };
 };
+
+window.forms_builder_empty = new forms_builder();

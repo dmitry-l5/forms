@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Cookie;
 Route::get('expire', function(){
     Cookie::expire('filled_form');
 });
+Route::view('show', 'show_components');
 Route::get('/worksheet/{form_id}', [App\Http\Controllers\FormController::class, 'create']);
 Route::post('worksheet/store/{form_id}', [App\Http\Controllers\FormController::class, 'store']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
