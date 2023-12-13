@@ -33,9 +33,6 @@ Route::get('/worksheet/{form_id}', [App\Http\Controllers\FormController::class, 
 Route::post('worksheet/store/{form_id}', [App\Http\Controllers\FormController::class, 'store']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
 
-
-
-
 Route::prefix('cabinet')->middleware('auth')->group(function(){
     Volt::route('/', 'pages.cabinet.index');
 

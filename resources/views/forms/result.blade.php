@@ -1,6 +1,6 @@
 <x-layouts.guest>
-    <div class="px-4 bg-white h-full">
-        <x-forms.card class=' bg-white h-full rounded-none'>
+    <div class="p-4 bg-sky-50  h-full">
+        <x-forms.card class=' bg-white h-full !overflow-auto'>
             @php($header = array_filter($result->items, function($item){
                 return $item->type == 'header' ? true : false;
             })[0] ?? null)

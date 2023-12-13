@@ -30,7 +30,7 @@ new
                     + Создать форму
                 {{-- </a> --}}
             </x-buttons.link>
-            <x-forms.link_button_1 href="{{ url('templates/create') }}" class="border border-neutral-500 p-3 m-3  bg-blue-500 text-white">{{ __('Create form') }}</x-forms.link_button_1>
+
         </div>
             {{-- list you worksheets --}}
             <div class="mb-5">

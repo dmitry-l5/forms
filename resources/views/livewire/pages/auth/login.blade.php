@@ -20,14 +20,11 @@ new #[Layout('layouts.blank')] class extends Component
     #[Rule(['boolean'])]
     public bool $remember = false;
 
-    public function login(): void
-    {
-        
+    public function login(): void{
         $this->validate();
         $this->ensureIsNotRateLimited();
         if (! auth()->attempt($this->only(['email', 'password'], $this->remember))) {
             RateLimiter::hit($this->throttleKey());
-            dd('oppa');
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
@@ -36,8 +33,8 @@ new #[Layout('layouts.blank')] class extends Component
         session()->regenerate();
         // dd( session(), session('url.intended'));
         $this->redirect(
-            // session('url.intended', RouteServiceProvider::HOME),
-            session('url.intended', url('cabinet')),
+            session('url.intended', RouteServiceProvider::HOME),
+            //session('url.intended', url('cabinet')),
             navigate: true
         );
     }

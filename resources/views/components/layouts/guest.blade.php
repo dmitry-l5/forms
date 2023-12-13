@@ -20,9 +20,8 @@
                 {{ $header ?? '' }}
             </div>
         </div>
-        <div class=" flex-grow flex flex-row overflow-x-scroll">
+        <div class=" flex-grow flex flex-row overflow-x-auto">
             <section>
-    
             </section>
             <main class="flex-grow">
                 {{ $slot }}
