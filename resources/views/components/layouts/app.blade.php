@@ -6,12 +6,12 @@
     <title>{{ $title ?? 'Формы' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="text-lg min-h-full">
+<body class="text-lg min-h-full text-neutral-800 bg-sky-50 ">
     <div class="min-h-[100vh] flex flex-col justify-between">
-        <div class="w-full">
-            <div class="min-h-[48px] bg-green-600 border-b-2 border-black text-zinc-700 flex justify-between items-center "> 
-                <x-home title="{{ __('Home page') }}"></x-home>  
-                <livewire:layout.auth_panel />
+        <div class="w-full box-border">
+            <div class="min-h-[48px] bg-sky-800 border-b-2 border-black flex justify-between items-end "> 
+                <x-home class="" title=""></x-home>  
+                <livewire:layout.auth_panel/>
             </div>
             <div class="">
                 {{ $header ?? '' }}
@@ -28,7 +28,7 @@
                 
             </section>
         </div>
-        <div class="w-full bg-green-600  ">
+        <div class="w-full  bg-sky-800  ">
             <div class="min-h-[48px] border-t-2 border-black">
 
             </div>

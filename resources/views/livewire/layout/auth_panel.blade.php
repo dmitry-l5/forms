@@ -19,16 +19,19 @@ new class extends Component
     }
 }; ?>
 
-<div class=" bg-slate-100 m-4 p-3 relative  border border-black box-border" x-data="{open:false}">
-  
-        <div  x-on:click="open = !open">
-            <span class="">
+<div class="p-0 m-0 border-0 hover:bg-sky-500" x-data="{open:false}">
+    <div class=" h-full text-white box-border px-4 py-2" >
+        <div class=" h-full flex justify-center items-center" x-on:click="open = !open">
+            <div>
                 {{ Auth::user()->email }}
-            </span>
-        <div class="z-50  shadow shadow-neutral-500  w-full absolute left-0 bg-slate-100 p-3 border border-black " x-show='open' :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden" >
-            <div class="" wire:click='logout'>
-                {{ __("Log out") }}
             </div>
         </div>
-  </div>
+    </div>
+    <div class="relative p-0 m-0 h-0">
+            <div  class=" z-50 bg-white w-full absolute left-0 top-[5px] border-black border " x-show='open' :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden" >
+                <div class=" px-2 py-1  border-b hover:bg-sky-500 hover:text-white" wire:click='logout'>
+                    Выйти
+                </div>
+            </div>
+    </div>
 </div>

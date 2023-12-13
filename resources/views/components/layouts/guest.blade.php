@@ -10,9 +10,9 @@
 <body class="text-lg w-full ">
     <div class="min-h-[100vh] flex flex-col justify-between w-auto">
         <div class="w-full">
-            <div class="min-h-[48px] bg-slate-200 border-b-2 border-black text-zinc-700  flex justify-between items-center  ">
+            <div class="min-h-[48px] bg-sky-800 border-b-2 border-black text-zinc-700  flex justify-between items-center  ">
                 @auth
-                    <x-home title="{{ __('Home page') }}"></x-home>  
+                    <x-home title=""></x-home>  
                     <livewire:layout.auth_panel />
                 @endauth
             </div>
@@ -31,7 +31,7 @@
                 
             </section>
         </div>
-        <div class="w-full bg-slate-200  ">
+        <div class="w-full text-white bg-sky-800 border-b-2  ">
             <div class="min-h-[48px] border-t-2 border-black">
 
             </div>

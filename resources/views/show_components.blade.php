@@ -75,6 +75,8 @@
         <div class="border p-5">
             <x-buttons.primary>buttons.primary</x-buttons.primary>
             <x-buttons.secondary>buttons.secondary</x-buttons.secondary>
+            <x-buttons.success>buttons.success</x-buttons.success>
+            <x-buttons.link>buttons.link</x-buttons.link>
 
         </div>
     </div>

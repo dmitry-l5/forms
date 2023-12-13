@@ -24,7 +24,7 @@
             }
         ?>
         <script>
-            let form = new forms_builder( "{{ url('manage/form_templates/') }}", csrf);
+            let form = new forms_builder( "{{ url('templates/') }}", csrf);
             form.draw_editor(editor, data_json);
             //form.draw_editor(editor, JSON.stringify(form.get_test_form()));
         </script>

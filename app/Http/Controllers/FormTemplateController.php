@@ -61,7 +61,7 @@ class FormTemplateController extends Controller
         $form_data->aux->template_id =  $form->id;
         $form->data_json = json_encode($form_data);
         $form->save();
-        return redirect(url('/manage/form_templates'));
+        return redirect(url('/'));
     }
 
     /**

@@ -1,11 +1,11 @@
 <x-layouts.guest>
-    <div class="p-4">
-        <x-forms.card class='bg-slate-50'>
+    <div class="px-4 bg-white h-full">
+        <x-forms.card class=' bg-white h-full rounded-none'>
             @php($header = array_filter($result->items, function($item){
                 return $item->type == 'header' ? true : false;
             })[0] ?? null)
             @if ($header)
-                <h1 class=' text-center text-4xl py-4 border-b-2 border-black'>{{ $header->title }}</h1>
+                <h1 class=' text-center text-4xl py-4 border-b-2 border-sky-800'>{{ $header->title }}</h1>
                 <div class="py-2">{{ $header->description }}</div>
             @endif
             @foreach ($result->items as $item)

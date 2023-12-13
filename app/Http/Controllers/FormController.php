@@ -28,7 +28,7 @@ class FormController extends Controller
         // dd(Cookie::get());
         $template = FormTemplate::where(['alias_id'=>$form_id])->first();
         if( $template ){
-            if($this->check_cookie_form($template)){
+            if(config('app.cookie_check') && $this->check_cookie_form($template)){
                 return view('forms.thanks', ['message'=>'create.check_cookie']);
             }
             return view( 'slides', compact('template'));

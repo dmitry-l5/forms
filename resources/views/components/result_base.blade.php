@@ -1,5 +1,5 @@
-<div class="border border-1 border-neutral-400 bg-white my-4 py-2 rounded-lg">
-    <div class=" text-start px-4 border-b border-neutral-300" title="{{ $description ?? '' }}">
+<div class="border border-2 border-sky-700 bg-white my-4 py-2 pt-0">
+    <div class=" bg-sky-700 text-start px-4 border-b border-neutral-300 text-white " title="{{ $description ?? '' }}">
         {{ $title }}
     </div>
     <div class="">

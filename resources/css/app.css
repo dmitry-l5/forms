@@ -2,3 +2,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.filter-svg{
+    filter: invert(100%);
+    /* filter: invert(100%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(100%) contrast(119%); */
+}
+.filter-svg:hover{
+    /* filter: invert(100%) sepia(100%) saturate(90000%) hue-rotate(86deg) brightness(250%) contrast(50%); */
+}
