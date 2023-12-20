@@ -42,8 +42,9 @@ class FormTemplateController extends Controller
         $validated = $validator->validate();
         $form_data = json_decode($validated['result_json']);
         $result = new \stdClass();
-
         $form = new FormTemplate();
+        if($request->has('id')){$form = FormTemplate::where(['id'=>$request->input('id')])->first();}
+        if(!$form){return abort(404);}
         $form->author_id = Auth::user()->id ?? 1;
         $form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
         $form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
@@ -75,9 +76,10 @@ class FormTemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(string $id){
+        $form = FormTemplate::where(['id'=>$id, 'author_id'=>Auth::user()->id])->first();
+        if(!$form)return abort(404);
+        return view('forms_manage.create_form', ['worksheet'=>$form]);
     }
 
     /**

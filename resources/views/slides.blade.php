@@ -36,9 +36,10 @@
                         <x-forms.header title="{{$item->title ?? ''}}" description='{{$item->description ?? ""}}'></x-forms.header>
                         @break
                     @case('checkbox_group')
-                    
+               
                         <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
                             <x-forms.checkbox_group>
+                                
                                 @foreach ( $item->options as $input_name => $title )
                                     <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.checkbox_group_option>
                                 @endforeach

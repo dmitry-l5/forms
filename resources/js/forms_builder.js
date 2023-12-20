@@ -1,4 +1,4 @@
-function forms_builder(send_template_to, csrf){
+function forms_builder(send_template_to, csrf, template_id = null){
     this.send_template_to = send_template_to;
     this.csrf = csrf;
     this.id_counter = 0;
@@ -26,11 +26,12 @@ function forms_builder(send_template_to, csrf){
                 node.innerHTML =
                 '<h2 class="form_header">Редактор форм</h2>'
                 +'<div class="header_block">'
-                +'<input class="form-control" worksheet_field type="hidden" name="type" value = "header">'
+                +((template_id)?'<input type="hidden" name="id" value = "'+template_id+'">':"")
+                +'<input worksheet_field type="hidden" name="type" value = "header">'
                 +'<label class="w-full helios-bold my-2 bg-teal-600" for="' + data.id + '_title">Заголовок формы</label>'
-                +'<input class="form-control" worksheet_field type="text" name="title" id="' + data.id + '_title" value="'+data.title+'">'
+                +'<input class="form-control" worksheet_field type="text" name="title" id="' + data.id + '_title" value="'+data.title+'" placeholder="Введите название формы">'
                 +'<label class="helios-bold my-2" for="' + data.id + '_description">Описание формы</label>'
-                +'<textarea class="form-control" worksheet_field name="description" id="' + data.id + '_description"  rows="3" class="w-100">'+data.description+'</textarea>'
+                +'<textarea class="form-control" worksheet_field name="description" id="' + data.id + '_description"  rows="3" class="w-100" placeholder="Введите описание формы">'+data.description+'</textarea>'
                 +'</div>'
                 ;
                 return node;
@@ -218,8 +219,18 @@ function forms_builder(send_template_to, csrf){
                 options_panel.classList.add('options_panel');
                 let add_button = document.createElement('div');
                 add_button.classList.add('add_option_button');
+                if(data.options){
+                    console.log('data.options');
+                    console.log(data.options);
+                    Object.entries(data.options).forEach((item)=>{
+                        this.add_option_silent(options_panel, item);
+                    });
+                    console.warn('options ok');
+                }else{
+                    console.warn('options not');
+                }
                 let builder = this;
-                add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e, this); };
+                add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e); };
                 add_button.innerHTML = 
                 "<button>+ Добавить вариант</button>"
                 +""
@@ -239,12 +250,23 @@ function forms_builder(send_template_to, csrf){
             editor:(data)=>{
                 let node = this.palette.base.editor(data);
                 console.warn(node);
+                console.warn(data);
                 let options_panel = document.createElement('div');
                 options_panel.classList = 'options_panel';
                 let add_button = document.createElement('div');
                 add_button.classList = 'add_option_button';
+                if(data.options){
+                    console.log('data.options');
+                    console.log(data.options);
+                    Object.entries(data.options).forEach((item)=>{
+                        this.add_option_silent(options_panel, item);
+                    });
+                    console.warn('options ok');
+                }else{
+                    console.warn('options not');
+                }
                 let builder = this;
-                add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e, this); };
+                add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e); };
                 add_button.innerHTML = 
                 "<button>+ Добавить вариант</button>"
                 +""
@@ -300,29 +322,48 @@ function forms_builder(send_template_to, csrf){
         },
 
     };
-    this.add_option = (e, name = 'oppa')=>{
-        let option_id = this.get_id('option_');
+    this.add_option = (e, data = null)=>{
+ 
+        console.error('data = ');
+        console.log(data);
+        
         let options_panel = e.target.parentNode.parentNode;
+        this.add_option_silent(options_panel, data);
+
+
+        console.warn();
+
+
+        console.log(e.target.parentNode.parentNode);
+
+    };
+    this.add_option_silent = (panel, data = null )=>{
+        let option_id = '';
+        let option_title = null;       console.log('data = ');
+        console.log(data);
+        if(data != null){
+            [id, title] = data;
+            option_title = title;
+            option_id = id;
+        }else{
+            option_id = this.get_id('option_');
+        }
         let option_container = document.createElement('div');
         option_container.id = 'container_' + option_id;
         option_container.classList.add('option_container');
         option_container.innerHTML =
         "<div>" 
         +"<label for='"+option_id+"'>текст поля</label>"
-        +"<input type='text' name='"+option_id+"' id="+option_id+" option>"
+        +"<input type='text' name='"+option_id+"' id="+option_id+" option value="+(option_title?"'"+option_title+"'":'')+">"
         +"</div>" 
         +""
         +""
         ;
-
         let delete_option_button = document.createElement('div');
-
         delete_option_button.innerHTML = "<button class='delete_button'>удалить</button>";
         delete_option_button.onclick = (e)=>{ document.getElementById('container_' + option_id).remove();};
         option_container.append(delete_option_button);
-        options_panel.append(option_container);
-
-        console.log(e.target.parentNode.parentNode);
+        panel.append(option_container);
 
     };
     this.remove_field = (e)=>{
@@ -347,8 +388,8 @@ function forms_builder(send_template_to, csrf){
             items: [
                 {
                     type: 'header',
-                    title: 'Введите название формы',
-                    description: 'Введите описание формы',
+                    title: '',
+                    description: '',
                     input_name:'header',
                 },
             ]
@@ -444,11 +485,9 @@ function forms_builder(send_template_to, csrf){
         }
         this.id_counter = data.aux.id_counter;
         this.template_id = data.aux.template_id ?? -1;
-
         data.items.forEach((item, index, arr)=>{
-            this.add_field(null, form, item)
+            this.add_field(null, form, item);
         });
-
         let control = this.palette.control.editor(form);
         form.after(control);
     };
@@ -474,13 +513,12 @@ function forms_builder(send_template_to, csrf){
             item = this.get_empty_item();
         }
         let board = document.createElement('div');
-
         board.classList.add('field_backplane');
         board.setAttribute('debug', 'field_panel');
         let select = this.palette.select.editor(item);
         let inputs = this.create_inputs(item);
         if(select){
-                board.append(select);
+            board.append(select);
         };
         board.append(inputs);
         form.append(board);

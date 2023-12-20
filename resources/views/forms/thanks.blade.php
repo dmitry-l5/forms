@@ -5,5 +5,4 @@
     <div class="">
         <!-- {{ $message ?? '#' }} -->
     </div>
-    
 </x-layouts.guest>

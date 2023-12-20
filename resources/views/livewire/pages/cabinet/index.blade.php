@@ -40,7 +40,7 @@ new
                 <thead>
                     <tr>
                         <td class="border border-slate-700 bg-slate-200">Название</td>
-                        <td class="border border-slate-700 bg-slate-200">Ссылка на опрос</td>
+                        <td class="border border-slate-700 bg-slate-200">Ссылки :</td>
                         <td class="border border-slate-700 bg-slate-200">Действия</td>
                     </tr>
                 </thead>
@@ -52,12 +52,19 @@ new
                             {{ $header->title ?? '' }}
                         </td>
                         <td class="border border-slate-700">
+                            на форму : 
                             <a href="{{ url(config('app.form_prefix').'/'.$form->alias_id) }}">
                                 {{ url(config('app.form_prefix').'/'.$form->alias_id) }}
+                            </a>
+                            <br>
+                            на результаты :
+                            <a href="{{ url('result/'.$form->alias_id) }}">
+                                {{ url('result/'.$form->alias_id) }}
                             </a>
                         </td>
                         <td class="border border-slate-700">
                             <x-forms.link_button_1 href="{{ url('result/'.$form->alias_id) }}">{{ __('Show results') }}</x-forms.link_button_1>
+                            <x-buttons.link href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
                         </td>
                     </tr>
                     @endforeach
