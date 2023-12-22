@@ -16,7 +16,7 @@ new
 
         public function with():array{
             return [
-                'forms'=>Gate::allows('create_forms')?FormTemplate::where(['author_id'=>Auth::user()->id])->paginate(10):[],
+                'forms'=>Gate::allows('create_forms')?FormTemplate::where(['author_id'=>Auth::user()->id])->orderBy('updated_at', 'DESC')->paginate(10):[],
             ];
         }
 }; ?>

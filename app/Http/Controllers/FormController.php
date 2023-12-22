@@ -23,8 +23,7 @@ class FormController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $form_id)
-    {
+    public function create(string $form_id){
         // dd(Cookie::get());
         $template = FormTemplate::where(['alias_id'=>$form_id])->first();
         if( $template ){
@@ -53,8 +52,7 @@ class FormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(string $form_id, Request $request)
-    {
+    public function store(string $form_id, Request $request){
         $template = FormTemplate::where(['alias_id'=>$form_id])->first();
         $filled_form_cookie_arr = [];
         if(config('app.ip_check')){
@@ -75,10 +73,11 @@ class FormController extends Controller
         //     return back()->withErrors($validator)->withInput();
         // }
         $validated = $request->all();// $validator->validate();
+      
         $inputs = array_filter(
             json_decode($template->data_json)->items, 
             function($item){
-                return in_array($item->type, ['radio_group', 'checkbox_group', 'checkbox']);
+                return in_array($item->type, ['radio_group', 'checkbox_group', 'checkbox', 'textarea']);
                 // return !in_array($item->type, ['header']);
             });
         $result = array();
@@ -88,8 +87,11 @@ class FormController extends Controller
                     if(isset($validated[$item->input_name]) && $validated[$item->input_name] == 'on'){
                         $result[$item->input_name] = true ;
                     }else{
-                        $result[$item->input_name] = false ;
+                        $result[$item->input_name] = false;
                     }
+                    break;
+                case 'textarea':
+                    $result[$item->input_name] = $validated[$item->input_name];
                     break;
                 case('radio_group'):
                     $options = (array)($item->options ?? []);
@@ -116,7 +118,8 @@ class FormController extends Controller
                     $result[$item->input_name ?? $item->type_ ?? ''] = "not supported" ;
                 break;
             }            
-        }, $inputs);       
+        }, $inputs);  
+        // dd($result);     
         $data = (object)$result;
         $answer = new Answers();
         $answer->ip = $request->ip();

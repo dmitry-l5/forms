@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FormTemplate;
 use App\Models\Answers;
 
-class ResultController extends Controller
-{
+class ResultController extends Controller{
     public function show(Request $request, string $template_id, int $viewer_id = 0){
         $template = FormTemplate::where(['alias_id'=>$template_id])->first();
         if(!$template){return abort(404);}
@@ -61,7 +60,23 @@ class ResultController extends Controller
                     });
                     $result->{$field->input_name} = $count;
                     // dd('else',$result,  $field, $field->input_name, $key);
+                }elseif($field->type == 'textarea'){
+                    $count = 0;
+                    $answers = $data->toArray();
+                    $answers_arr = [];
+                    // dd($answers);
+                    array_walk($answers, function($input, $key)use(&$count, $field, &$answers_arr){
+                       // dd($input);
+                        if(isset($input->{$field->input_name})){
+                            $answers_arr[] = $input->{$field->input_name};
+                            $count++;
+                        };
+                        // dd($count, $input, $field);
+                    });
+                    $result->{$field->input_name} = (object)['count'=>$count, 'answers'=>$answers_arr];
+ 
                 }else{
+                    return abort(404);
                     dd('error');
                 }
             }else{
@@ -79,7 +94,6 @@ class ResultController extends Controller
                         $item->result->{$option} = $result->{$item->input_name}->{$name};
                         //  echo($name.'   :::   '.$option.'<br>');
                     }
-            
                 }else{
                     $item->result = (object)[ $item->title => $result->{$item->input_name}]; 
                 }
@@ -92,7 +106,6 @@ class ResultController extends Controller
             'items'=>$form_items,
         ];
         // dd($result_form, $form_items, $result);
-
         return $result_form;
     }
 }

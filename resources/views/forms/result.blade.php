@@ -14,6 +14,7 @@
             @endif
             <x-result_base title="{{  $item->title  }}" description="{{  $item->description  }}">
                 @if(isset($item->result))
+                {{ dd($item->result) }}
                 @foreach ($item->result as $key => $value)
                 <x-result_line class="py-1" x-data="{ total:{{ $result->data->count }}, count:{{ $value }}, title:'{{  (count((array)$item->result)>1)?$key:null }}' }" percent="{{ $result->data->count?($value/$result->data->count )*100:0 }}">
                     </x-result_line>

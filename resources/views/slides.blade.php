@@ -26,7 +26,7 @@
             });
         </script>
 
-    <div  class='h-full p-4 ' x-data="{ index : 0, index_max : {{ $count }} }">
+    <div class='h-full p-4 ' x-data="{ index : 1, index_max : {{ $count }} }">
         <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->alias_id) }}" id='worksheet' >
             @csrf
             @foreach ($data->items as $item )
@@ -36,10 +36,8 @@
                         <x-forms.header title="{{$item->title ?? ''}}" description='{{$item->description ?? ""}}'></x-forms.header>
                         @break
                     @case('checkbox_group')
-               
                         <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
                             <x-forms.checkbox_group>
-                                
                                 @foreach ( $item->options as $input_name => $title )
                                     <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.checkbox_group_option>
                                 @endforeach
@@ -61,6 +59,11 @@
                     @case('checkbox')
                         <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
                             <x-forms.checkbox title="{{$item->title}}" description="{{$item->description}}" name="{{ $item->input_name }}" ></x-forms.checkbox>
+                        </x-forms.base>
+                        @break
+                    @case('textarea')
+                        <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
+                            <x-forms.textarea title="{{$item->title}}" description="{{$item->description}}" name="{{ $item->input_name }}" ></x-forms.textarea>
                         </x-forms.base>
                         @break
                     @case('radio_group')
@@ -87,6 +90,7 @@
                     @default
                     <x-forms.base title="{{$item->title ?? ''}}" description="{{$item->description ?? ''}}">
                         <span class=" bg-red-200">
+                            {{-- {{ dd($item) }} --}}
                             Ошибка: этот тип поля не поддерживается.
                         </span>
                     </x-forms.base>
