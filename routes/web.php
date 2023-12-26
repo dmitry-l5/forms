@@ -35,7 +35,6 @@ Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultControll
 
 Route::prefix('cabinet')->middleware('auth')->group(function(){
     Volt::route('/', 'pages.cabinet.index');
-
 });
 Route::middleware('can:create_forms')->group(function(){
     Route::resource('templates', App\Http\Controllers\FormTemplateController::class);

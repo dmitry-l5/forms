@@ -9,19 +9,22 @@
                 <div class="py-2">{{ $header->description }}</div>
             @endif
             @foreach ($result->items as $item)
-            @if ( in_array($item->type, ['header']))
-                @continue
-            @endif
-            <x-result_base title="{{  $item->title  }}" description="{{  $item->description  }}">
-                @if(isset($item->result))
-                {{ dd($item->result) }}
-                @foreach ($item->result as $key => $value)
-                <x-result_line class="py-1" x-data="{ total:{{ $result->data->count }}, count:{{ $value }}, title:'{{  (count((array)$item->result)>1)?$key:null }}' }" percent="{{ $result->data->count?($value/$result->data->count )*100:0 }}">
-                    </x-result_line>
-                    @endforeach
-                    @endif
-                </x-result_base>
-                @endforeach
+                @switch($item->type)
+                    @case('header')
+                        @break
+                    @case('textarea')
+                        <x-ResultTextarea :data='$item'></x-result_textarea>
+                        @break
+                    @default
+                        <x-result_base title="{{  $item->title  }}" description="{{  $item->description  }}">
+                            @if(isset($item->result))
+                                @foreach ($item->result as $key => $value)
+                                    <x-result_line class="py-1" x-data="{ total:{{ $result->data->count }}, count:{{ $value }}, title:'{{  (count((array)$item->result)>1)?$key:null }}' }" percent="{{ $result->data->count?($value/$result->data->count )*100:0 }}"></x-result_line>
+                                @endforeach
+                            @endif
+                        </x-result_base>   
+                @endswitch
+            @endforeach
         </x-forms.card>
     </div>
 </x-layouts.guest>
