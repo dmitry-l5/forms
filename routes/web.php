@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Livewire\Volt\Volt;
 use App\Models\FormTemplate;
 use Illuminate\Support\Facades\Cookie;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,18 @@ use Illuminate\Support\Facades\Cookie;
 
 // Route::resource('pdf', App\Http\Controllers\TestPDFController::class );
 
-Volt::route('pdf', 'pages.testpdf');
+Route::get('pdf', function(){
+    $pdf = Pdf::loadView('pdf.test', ['title'=>'TITLE', 'date'=>'12.09.2026', 'users'=>[
+        (object)['id'=>100, 'name'=>'NAME','email'=>'oppa@oppa.oppa'],
+        (object)['id'=>100, 'name'=>'NAME','email'=>'oppa@oppa.oppa'],
+        (object)['id'=>100, 'name'=>'NAME','email'=>'oppa@oppa.oppa'],
+        ]]);
+    $pdf->setPaper('A4', 'landscape');
+
+    return $pdf->stream();
+    
+});
+// Volt::route('pdf', 'pages.testpdf');
 Route::get('expire', function(){
     Cookie::expire('filled_form');
 });

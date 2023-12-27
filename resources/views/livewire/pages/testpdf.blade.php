@@ -7,6 +7,7 @@ use Livewire\Volt\Component;
 use Livewire\WithPagination;
 use App\Models\FormTemplate;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 use function Livewire\Volt\{state};
@@ -14,6 +15,16 @@ use function Livewire\Volt\{state};
 new 
     #[Layout('components.layouts.app')] 
     class extends Component{
+
+        public function pdf_download(){
+            $pdf = PDF::loadView('pdf.test');
+            dd($pdf);
+            return $pdf->download() ;
+        }
+        public function pdf_stream(){
+            $pdf = PDF::loadView('pdf.test', []);
+            return $pdf->stream() ;
+        }
 
     }
 ?>
@@ -23,51 +34,12 @@ new
         @if ((!config('app.need_email_verification'))|Auth::user()->hasVerifiedEmail())
             @if (Gate::allows('create_forms'))
             <div class="flex justify-start">
-                <x-buttons.link href="{{ url('templates/create') }}">
-                    {{-- <a > --}}
-                        + Создать форму
-                    {{-- </a> --}}
-                </x-buttons.link>
-    
+                <div wire:click="pdf_download"  class="border border-2 m-3 p-2 bg-orange-300 hover:bg-orange-500">button</div>
+                <div wire:click="pdf_stream"    class="border border-2 m-3 p-2 bg-orange-300 hover:bg-orange-500">button</div>
             </div>
-                {{-- list you worksheets --}}
-                <div class="mb-5">
-                    {{ $forms->links() }}
-                </div>
-                <table class="w-full border-collapse border border-slate-500 overflow-scroll">
-                    <thead>
-                        <tr>
-                            <td class="border border-slate-700 bg-slate-200">Название</td>
-                            <td class="border border-slate-700 bg-slate-200">Ссылки :</td>
-                            <td class="border border-slate-700 bg-slate-200">Действия</td>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        @foreach ($forms as $form)
-                        @php(  $header = array_filter( json_decode($form->data_json)->items, function($item){return $item->type == 'header';})[0] ?? null  )
-                        <tr class="overflow-scroll">
-                            <td class="border border-slate-700" >
-                                {{ $header->title ?? '' }}
-                            </td>
-                            <td class="border border-slate-700">
-                                на форму : 
-                                <a href="{{ url(config('app.form_prefix').'/'.$form->alias_id) }}">
-                                    {{ url(config('app.form_prefix').'/'.$form->alias_id) }}
-                                </a>
-                                <br>
-                                на результаты :
-                                <a href="{{ url('result/'.$form->alias_id) }}">
-                                    {{ url('result/'.$form->alias_id) }}
-                                </a>
-                            </td>
-                            <td class="border border-slate-700">
-                                <x-forms.link_button_1 href="{{ url('result/'.$form->alias_id) }}">{{ __('Show results') }}</x-forms.link_button_1>
-                                <x-buttons.link href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="mb-5">
+
+            </div>
             @endif
         @else
             <livewire:VerifyEmail />

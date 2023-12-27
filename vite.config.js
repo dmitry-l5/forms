@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/forms_builder.js',
+                'resources/css/pdf/test.css',
             ],
             refresh: true,
            
