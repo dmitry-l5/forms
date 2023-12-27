@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Cookie;
 //     }
 // });
 
+// Route::resource('pdf', App\Http\Controllers\TestPDFController::class );
+
+Volt::route('pdf', 'pages.testpdf');
 Route::get('expire', function(){
     Cookie::expire('filled_form');
 });
@@ -39,7 +42,6 @@ Route::prefix('cabinet')->middleware('auth')->group(function(){
 Route::middleware('can:create_forms')->group(function(){
     Route::resource('templates', App\Http\Controllers\FormTemplateController::class);
 });
-
 
 // Route::get('form/create/{template}', [App\Http\Controllers\FormController::class, 'create']);
 // Route::resource('form', App\Http\Controllers\FormController::class)->except(['create', 'store' ]);
