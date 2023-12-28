@@ -37,11 +37,13 @@
                         @break
                     @case('checkbox_group')
                         <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
-                            <x-forms.checkbox_group>
-                                @foreach ( $item->options as $input_name => $title )
-                                    <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.checkbox_group_option>
-                                @endforeach
-                            </x-forms.checkbox_group>
+                            @if (isset($item->options))
+                                <x-forms.checkbox_group>
+                                    @foreach ( $item->options as $input_name => $title )
+                                        <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.checkbox_group_option>
+                                    @endforeach
+                                </x-forms.checkbox_group>
+                            @endif
                         </x-forms.base>
                         <script>
                             function {{ $item->input_name }}_validate(){
@@ -68,11 +70,13 @@
                         @break
                     @case('radio_group')
                         <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
-                            <x-forms.radio_group>
-                                @foreach ( $item->options as $input_name => $title )
-                                <x-forms.radio_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.radio_group_option>
-                            @endforeach
-                            </x-forms.radio_group>
+                            @if (isset($item->options))
+                                <x-forms.radio_group>
+                                    @foreach ( $item->options as $input_name => $title )
+                                    <x-forms.radio_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.radio_group_option>
+                                @endforeach
+                                </x-forms.radio_group>
+                            @endif
                         </x-forms.base>
                         <script>
                             function {{ $item->input_name }}_validate(){

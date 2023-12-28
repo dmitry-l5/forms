@@ -10,7 +10,8 @@ class ResultTextarea extends Component
 {
     public $total, $answers, $title, $description;
     public function __construct(
-        public $data= null,
+        public $data = null,
+        public $is_true = false,
     )
     {
         if(!$data){ return; }
