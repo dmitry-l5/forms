@@ -35,9 +35,7 @@ Route::get('pdf', function(){
         (object)['id'=>100, 'name'=>'NAME','email'=>'oppa@oppa.oppa'],
         ]]);
     $pdf->setPaper('A4', 'landscape');
-
     return $pdf->stream();
-    
 });
 // Volt::route('pdf', 'pages.testpdf');
 Route::get('expire', function(){

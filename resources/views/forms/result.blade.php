@@ -1,6 +1,12 @@
 <x-layouts.guest>
     <div class="p-4 bg-sky-50  h-full">
         <x-forms.card class=' bg-white h-full !overflow-auto'>
+            <div class="flex justify-end">
+                <x-buttons.link href="{{ url('result/'.$alias.'/1') }}">
+                    Отчёт
+                </x-buttons.link>
+            </div>
+            <div class=""></div>
             @php($header = array_filter($result->items, function($item){
                 return $item->type == 'header' ? true : false;
             })[0] ?? null)

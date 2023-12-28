@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FormTemplate;
 use App\Models\Answers;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResultController extends Controller{
     public function show(Request $request, string $template_id, int $viewer_id = 0){
@@ -14,7 +15,14 @@ class ResultController extends Controller{
         $result = $this->collect_answers($template);
         //dd('after collect data',$template, $template_id, $viewer_id);
         // $form = json_decode($template->data_json, false);
-        return view('forms.result', compact('result'));
+        $alias = $template_id;
+        switch($viewer_id){
+            case 1:
+                $pdf = Pdf::loadView('pdf.result', compact('result', 'alias'));
+                return $pdf->stream();
+        
+        }
+        return view('forms.result', compact('result', 'alias'));
     }
     private function collect_answers($template){
         $form = json_decode($template->data_json);
