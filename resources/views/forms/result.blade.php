@@ -19,7 +19,7 @@
                     @case('header')
                         @break
                     @case('textarea')
-                        <x-ResultTextarea :data='$item'></x-result_textarea>
+                        <x-ResultTextarea :data='$item'></x-ResultTextarea>
                         @break
                     @default
                         <x-result_base title="{{  $item->title  }}" description="{{  $item->description  }}">

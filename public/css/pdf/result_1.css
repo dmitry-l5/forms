@@ -1,6 +1,13 @@
 body{
     font-family: 'open_sans';
 }
+.title{
+    font-size: larger;
+}
+.description{
+    font-size: small;
+
+}
 .header{
     text-align: center;
     font-size: 1.5rem;
@@ -13,4 +20,10 @@ body{
 }
 .not_supported{
     color: brown;
+}
+.w-100{
+    width: 100%;
+}
+.text-center{
+    text-align: center;
 }

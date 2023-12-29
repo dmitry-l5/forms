@@ -11,7 +11,7 @@ class ResultTextarea extends Component
     public $total, $answers, $title, $description;
     public function __construct(
         public $data = null,
-        public $is_true = false,
+        public $pdf = false
     )
     {
         if(!$data){ return; }
