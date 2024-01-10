@@ -1,0 +1,29 @@
+body{
+    font-family: 'open_sans';
+}
+.title{
+    font-size: larger;
+}
+.description{
+    font-size: small;
+
+}
+.header{
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: aquamarine;
+    border-bottom: 1px black solid;
+    padding: 1rem 0;
+}
+.description{
+    margin: 1rem 0;
+}
+.not_supported{
+    color: brown;
+}
+.w-100{
+    width: 100%;
+}
+.text-center{
+    text-align: center;
+}
