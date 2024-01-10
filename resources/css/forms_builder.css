@@ -120,15 +120,15 @@ width: 100%;
 }
 .control_panel .add_button{
     
-    background-color: hwb(219 40% 7%);
+    background-color: rgb(102, 149, 237);
 }
 .control_panel .add_button:hover{
-    background-color: hwb(219 20% 7%);
+    background-color: rgb(51, 116, 237);
     
 }
 .control_panel .submit_button{
-    background-color: hwb(115 40% 25%);
+    background-color: rgb(109, 191, 102);
 }
 .control_panel .submit_button:hover{
-    background-color: hwb(115 20% 25%);
+    background-color: rgb(63, 191, 51);
 }

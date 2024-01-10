@@ -49,7 +49,6 @@ class FormTemplateController extends Controller
         $form->title = (isset($form_data->head->form_title))?$form_data->head->form_title:'заголовок';
         $form->description = (isset($form_data->head->form_description))?$form_data->head->form_description:'описание';
         $obj = new \stdClass();
-
         $form->data_json = json_encode($obj);
         $alias_id = '';
         $limit = 101;
@@ -57,7 +56,7 @@ class FormTemplateController extends Controller
             $alias_id = Str::random(25);
             $limit--;
         }while($limit > 0 && FormTemplate::where('alias_id', $alias_id)->count() > 0);
-        $form->alias_id = $alias_id;
+        $form->alias_id = $form->alias_id?$form->alias_id:$alias_id;
         $form->save();
         $form_data->aux->template_id =  $form->id;
         $form->data_json = json_encode($form_data);
