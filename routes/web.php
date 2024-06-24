@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Livewire\Volt\Volt;
 use App\Models\FormTemplate;
+use App\Models\Links;
 use Illuminate\Support\Facades\Cookie;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -17,8 +18,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Route::get('/worksheet/{form_id}', function(string $id){ 
-//     $template = FormTemplate::where(['alias_id'=>$id])->first();
+// Route::get('/worksheet/{form_id}', function(string $id){
+//     $template = FormTemplate::where(['uuid'=>$id])->first();
 //     if( $template ){
 //         return view( 'slides', compact('template'));
 //     }else{
@@ -42,8 +43,10 @@ Route::get('expire', function(){
     Cookie::expire('filled_form');
 });
 Route::view('show', 'show_components');
-Route::get('/worksheet/{form_id}', [App\Http\Controllers\FormController::class, 'create']);
-Route::post('worksheet/store/{form_id}', [App\Http\Controllers\FormController::class, 'store']);
+Route::get('/worksheet/{form_id}/', [App\Http\Controllers\FormController::class, 'code_form']);
+Route::get('/worksheet/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'create']);
+Route::post('worksheet/store/{form_uuid}/{code}', [App\Http\Controllers\FormController::class, 'store']);
+Route::post('worksheet/start/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'start']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
 
 Route::prefix('cabinet')->middleware('auth')->group(function(){
@@ -51,6 +54,25 @@ Route::prefix('cabinet')->middleware('auth')->group(function(){
 });
 Route::middleware('can:create_forms')->group(function(){
     Route::resource('templates', App\Http\Controllers\FormTemplateController::class);
+    Route::prefix('links/')->group(function(){
+        Volt::route('template/{template}', 'pages.links.index');
+        Route::get('/get_pdf/{uuid}', function(string $uuid){
+            $validator = Validator::make(['uuid'=>$uuid], [
+                'uuid'=>'required|uuid',
+            ]);
+            if($validator->fails() )
+                return abort(404);
+            $template = FormTemplate::where('uuid', $uuid)->first();
+            if(!$template)
+                return abort(404);
+
+            $links = Links::where(['template_id'=>$template->id])->get();
+            $pdf = Pdf::loadView('pdf.links_list', ['links'=>$links, 'template'=>$template]);
+            $pdf->setPaper('A4', 'landscape');
+            // dd($template, $links);
+            return $pdf->stream();
+        });
+    });
 });
 
 // Route::get('form/create/{template}', [App\Http\Controllers\FormController::class, 'create']);

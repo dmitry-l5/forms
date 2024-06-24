@@ -23,14 +23,14 @@
     <table class="w-full">
         <tr>
             <td class="w-half">
-                
+
             </td>
             <td class="w-half">
                 <h2>Invoice ID: 834847473</h2>
             </td>
         </tr>
     </table>
- 
+
     <div class="margin-top">
         <table class="w-full">
             <tr>
@@ -47,7 +47,7 @@
             </tr>
         </table>
     </div>
- 
+
     <div class="margin-top">
         <table class="products">
             <tr>
@@ -70,11 +70,11 @@
                 @endforeach
         </table>
     </div>
- 
+
     <div class="total">
         Total: $129.00 USD
     </div>
- 
+
     <div class="footer margin-top">
         <div>Thank you</div>
         <div>&copy; Laravel Daily</div>

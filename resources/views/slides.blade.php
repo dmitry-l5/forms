@@ -26,8 +26,23 @@
             });
         </script>
 
-    <div class='h-full p-4 ' x-data="{ index : 1, index_max : {{ $count }} }">
-        <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->alias_id) }}" id='worksheet' >
+    <div class='h-full p-4 ' x-data="{
+            index : 0,
+            index_max : {{ $count }},
+            start(template, link){
+                fetch( '{{ url('worksheet/start/'.$template->uuid.'/'.$link->uuid) }}', {
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With' : 'XMLHttpRequest'
+                },
+                }
+                );
+                return;
+            },
+             }">
+        <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->uuid.'/'.$link->uuid) }}" id='worksheet' >
             @csrf
             @foreach ($data->items as $item )
             <x-forms.card x-show="index == {{ $index }}" csrf='@csrf' x-data @message="alert('duykkukfyu');" url='' class='bg-slate-50'>
@@ -108,14 +123,18 @@
                 </x-slot:counter>
                 <x-slot:control class="text-center">
 
-               
+
                     <x-forms.button_2 x-show="index > 0"  x-on:click="(e)=>{e.preventDefault(); index--;}">Назад</x-forms.button_2>
-                    <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); index++;}">Начать</x-forms.button_2>
+                    <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); start('{{$template->uuid }}', '{{ $link->uuid}}' );  index++;}">Начать</x-forms.button_2>
                     @php
                         $input_name = isset($item->input_name)?$item->input_name:null;
                     @endphp
-                    <x-forms.button_2 x-show="index > 0 && index < index_max - 1"  x-on:click="(e)=>{e.preventDefault(); if({{$input_name?'true':'false'}} && typeof({{ $input_name }}_validate) == 'function'){ let pass = {{ $input_name.'_validate()' }}; console.log(pass); if(pass){index++;}}else{index++;} }">Следующий</x-forms.button_2>
-                    <x-forms.button_2 type="submit" x-show="index == index_max - 1" class="" x-on:click="(e)=>{e.preventDefault(); if({{$input_name?'true':'false'}} && typeof({{ $input_name }}_validate) == 'function'){ let pass = {{ $input_name.'_validate()' }}; console.log(pass); if(pass){worksheet.submit();}}else{worksheet.submit();} }">Завершить</x-forms.button_2>
+                    <x-forms.button_2 x-show="index > 0 && index < index_max - 1"  x-on:click="(e)=>{e.preventDefault(); if({{$input_name?'true':'false'}} && typeof({{ $input_name }}_validate) == 'function'){ let pass = {{ $input_name.'_validate()' }}; console.log(pass); if(pass){index++;}}else{index++;} }">
+                        Следующий
+                    </x-forms.button_2>
+                    <x-forms.button_2 type="submit" x-show="index == index_max - 1" class="" x-on:click="(e)=>{e.preventDefault(); if({{$input_name?'true':'false'}} && typeof({{ $input_name }}_validate) == 'function'){ let pass = {{ $input_name.'_validate()' }}; console.log(pass); if(pass){worksheet.submit();}}else{worksheet.submit();} }">
+                        Завершить
+                    </x-forms.button_2>
                 </x-slot:control>
                 <script>
                     console.warn( typeof({{ $item->input_name ?? 'default' }}_validate) == 'function'  );

@@ -9,8 +9,8 @@ use Livewire\WithPagination;
 use App\Models\FormTemplate;
 use Illuminate\Support\Facades\Auth;
 
-new 
-    #[Layout('components.layouts.app')] 
+new
+    #[Layout('components.layouts.app')]
     class extends Component{
         use WithPagination;
 
@@ -52,19 +52,20 @@ new
                             {{ $header->title ?? '' }}
                         </td>
                         <td class="border border-slate-700">
-                            на форму : 
-                            <a href="{{ url(config('app.form_prefix').'/'.$form->alias_id) }}">
-                                {{ url(config('app.form_prefix').'/'.$form->alias_id) }}
+                            на форму :
+                            <a href="{{ url(config('app.form_prefix').'/'.$form->uuid) }}">
+                                {{ url(config('app.form_prefix').'/'.$form->uuid) }}
                             </a>
                             <br>
                             на результаты :
-                            <a href="{{ url('result/'.$form->alias_id) }}">
-                                {{ url('result/'.$form->alias_id) }}
+                            <a href="{{ url('result/'.$form->uuid) }}">
+                                {{ url('result/'.$form->uuid) }}
                             </a>
                         </td>
                         <td class="border border-slate-700">
-                            <x-forms.link_button_1 href="{{ url('result/'.$form->alias_id) }}">{{ __('Show results') }}</x-forms.link_button_1>
+                            <x-forms.link_button_1 href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-forms.link_button_1>
                             <x-buttons.link href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
+                            <x-buttons.link href="{{ url('links/template/'.$form->id) }}">{{ __('Links') }}</x-buttons.link>
                         </td>
                     </tr>
                     @endforeach
@@ -74,8 +75,8 @@ new
     @else
         <livewire:VerifyEmail />
     @endif
-    
+
     </div>
-</div> 
+</div>
 
 

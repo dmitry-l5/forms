@@ -9,7 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResultController extends Controller{
     public function show(Request $request, string $template_id, int $viewer_id = 0){
-        $template = FormTemplate::where(['alias_id'=>$template_id])->first();
+        $template = FormTemplate::where(['uuid'=>$template_id])->first();
         if(!$template){return abort(404);}
         // Answers::where()->get();
         $result = $this->collect_answers($template);
@@ -20,7 +20,7 @@ class ResultController extends Controller{
             case 1:
                 $pdf = Pdf::loadView('pdf.result', compact('result', 'alias'));
                 return $pdf->stream();
-        
+
         }
         return view('forms.result', compact('result', 'alias'));
     }
@@ -29,7 +29,7 @@ class ResultController extends Controller{
         $data = $template->answers->map(function(Answers $answers){
             return json_decode($answers->data);
         });
-        $result = (object)[];     
+        $result = (object)[];
 // dd($form->items);
         array_walk($form->items, function($field, $key)use(&$result, $data){
             if(isset($field->input_name)){
@@ -82,7 +82,7 @@ class ResultController extends Controller{
                         // dd($count, $input, $field);
                     });
                     $result->{$field->input_name} = (object)['count'=>$count, 'answers'=>$answers_arr];
- 
+
                 }else{
                     return abort(404);
                     dd('error');
@@ -103,7 +103,7 @@ class ResultController extends Controller{
                         //  echo($name.'   :::   '.$option.'<br>');
                     }
                 }else{
-                    $item->result = (object)[ $item->title => $result->{$item->input_name}]; 
+                    $item->result = (object)[ $item->title => $result->{$item->input_name}];
                 }
                 $item->result_raw = $result->{$item->input_name};
             }
