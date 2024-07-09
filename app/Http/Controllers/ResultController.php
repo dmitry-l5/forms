@@ -13,6 +13,7 @@ class ResultController extends Controller{
         if(!$template){return abort(404);}
         // Answers::where()->get();
         $result = $this->collect_answers($template);
+
         //dd('after collect data',$template, $template_id, $viewer_id);
         // $form = json_decode($template->data_json, false);
         $alias = $template_id;
@@ -30,7 +31,6 @@ class ResultController extends Controller{
             return json_decode($answers->data);
         });
         $result = (object)[];
-// dd($form->items);
         array_walk($form->items, function($field, $key)use(&$result, $data){
             if(isset($field->input_name)){
                 $result->{$field->input_name} = [];
@@ -61,7 +61,7 @@ class ResultController extends Controller{
                     $count = 0;
                     $answers = $data->toArray();
                     array_walk($answers, function($input, $key)use(&$count, $field){
-                        if($input->{$field->input_name ?? false}){
+                        if($input->{$field->input_name} ?? false){
                             $count++;
                         };
                         // dd($count, $input, $field);
@@ -84,8 +84,8 @@ class ResultController extends Controller{
                     $result->{$field->input_name} = (object)['count'=>$count, 'answers'=>$answers_arr];
 
                 }else{
-                    return abort(404);
-                    dd('error');
+                    // return abort(404, "field without options. see collect_answers()");
+                    // dd($field);
                 }
             }else{
                 // echo($field->type."</br>");
@@ -93,7 +93,7 @@ class ResultController extends Controller{
         });
         $form_items = array_map(function($item)use($result){
             if(
-                isset($item->input_name) &&
+                !empty($item->input_name) &&
                 ($result->{$item->input_name} ?? false)
             ){
                 if(isset($item->options)){
@@ -108,7 +108,9 @@ class ResultController extends Controller{
                 $item->result_raw = $result->{$item->input_name};
             }
             return $item;
-        }, $form->items );
+        },
+        $form->items );
+
         $result_form = (object)[
             'data'=>(object)['template_id'=>$template->id, 'count'=>count($data)],
             'items'=>$form_items,

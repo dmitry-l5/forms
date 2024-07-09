@@ -12,7 +12,7 @@
         <div class="w-full">
             <div class="min-h-[48px] bg-sky-800 border-b-2 border-black text-zinc-700  flex justify-between items-center  ">
                 @auth
-                    <x-home title=""></x-home>  
+                    <x-home title=""></x-home>
                     <livewire:layout.auth_panel />
                 @endauth
             </div>
@@ -27,7 +27,7 @@
                 {{ $slot }}
             </main>
             <section>
-                
+
             </section>
         </div>
         <div class="w-full text-white bg-sky-800 border-b-2  ">

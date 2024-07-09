@@ -14,8 +14,40 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Invoice</title>
-    @vite('resources/js/app.js', 'vendor/courier/build')
-    <link rel="stylesheet" href="css/pdf/result_1.css'"> 
+    @vite('resources/js/app.js')
+    <link rel="stylesheet" href="css/pdf/result_1.css'">
+    <style>
+        body{
+            font-family: 'dejavu serif';
+        }
+        .answer_def{
+        }
+        .w_100{
+            width: 100%;
+        }
+        .w_50{
+            width: 50%;
+        }
+        .text_end{
+            text-align: end;
+        }
+        .border_bottom{
+            border-bottom: 1px solid black ;
+        }
+        table{
+            border-collapse: collapse;
+        }
+        .header{
+            text-align: center;
+        }
+        .description{
+            padding-bottom: 3em;
+        }
+        .item_header{
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     @php
@@ -27,28 +59,45 @@
         )[0] ?? null;
     @endphp
     <div class="header">
-        <span>{{ $header->title ?? '#title' }}</span>
+        <h1>{{ $header->title ?? '#title' }}</h1>
     </div>
     <div class="description">
         <span>{{ $header->description ?? '#description' }}</span>
     </div>
-    @foreach ($result->items as $item)
-    @switch($item->type)
-        @case('header')
-            @break
-        @case('textarea')
-            @php($varr = true)
-            <x-ResultTextarea :data='$item' :pdf='true'></x-ResultTextarea>
-            @break
-        @default
-            <x-result_base :pdf='true' title="{{  $item->title  }}" description="{{  $item->description  }}">
-                @if(isset($item->result))
-                    @foreach ($item->result as $key => $value)
-                        <x-result_line :is_pdf='true' class="py-1" x-data="{ total:{{ $result->data->count }}, count:{{ $value }}, title:'{{  (count((array)$item->result)>1)?$key:null }}' }" percent="{{ $result->data->count?($value/$result->data->count )*100:0 }}"></x-result_line>
-                    @endforeach
-                @endif
-            </x-result_base>   
-    @endswitch
-@endforeach
+    <div class="">
+        @foreach ($result->items as $item)
+        @switch($item->type)
+            @case('header')
+                @break
+            @case('textarea')
+                @php($varr = true)
+                <x-ResultTextarea :data='$item' :pdf='true'></x-ResultTextarea>
+                @break
+            @default
+                <div class="answer_def ">
+                    <div class="">
+                        <div class="item_header">{{  $item->title  }}</div>
+                        <div class="">{{  $item->description  }}</div>
+                    </div>
+                    <table class="w_100 ">
+                        <tbody>
+                            @foreach ($item->result as $key => $value)
+                            <tr >
+                                <td class="w_50 border_bottom">
+                                    <span class="">{{ $key }}</span>
+                                </td>
+                                <td class="w_50 border_bottom">
+                                    <div class="w_100 text_end">
+                                        <span class="">{{ $value }}</span>/<span class="">{{ $result->data->count }}</span>
+                                        ( <span class="">{{ $result->data->count?($value/$result->data->count )*100:0 }}%</span> )
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endswitch
+        @endforeach
+    </div>
 </body>
-</html>

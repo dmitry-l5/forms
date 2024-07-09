@@ -1,8 +1,8 @@
-<div x-data="{open : false, is_pdf:{{ $pdf ?? false }}}" class="border border-1 border-sky-700 bg-white my-4 py-2 pt-0 " >
+<div x-data="{open : true, is_pdf:'{{ $pdf ?? false }}', }" class="border border-1 border-sky-700 bg-white my-4 py-2 pt-0 " >
     @if ($pdf ?? false)
         <div class="w-100">
-            <div class="w-100 text-center title">{{ $title ?? '#' }}</div>
-            <div class="w-100 description">{{ $description ?? '#' }}</div>
+            <div class="item_header">{{ $title ?? '#' }}</div>
+            <div class="item_description">{{ $description ?? '#' }}</div>
         </div>
         <div class="">
             <div class="">

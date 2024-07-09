@@ -1,4 +1,4 @@
-<x-layouts.guest>
+<x-layouts.app>
     <div class="p-4 bg-sky-50  h-full">
         <x-forms.card class=' bg-white h-full !overflow-auto'>
             <div class="flex justify-end">
@@ -28,9 +28,9 @@
                                     <x-result_line class="py-1" x-data="{ total:{{ $result->data->count }}, count:{{ $value }}, title:'{{  (count((array)$item->result)>1)?$key:null }}' }" percent="{{ $result->data->count?($value/$result->data->count )*100:0 }}"></x-result_line>
                                 @endforeach
                             @endif
-                        </x-result_base>   
+                        </x-result_base>
                 @endswitch
             @endforeach
         </x-forms.card>
     </div>
-</x-layouts.guest>
+</x-layouts.app>

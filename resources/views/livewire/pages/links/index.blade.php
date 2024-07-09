@@ -59,41 +59,41 @@ use Barryvdh\DomPDF\Facade\Pdf;
 ?>
 
 <div>
-    <div class="flex justify-between">
+    <div class="flex justify-between py-3">
         <x-primary-button type="button"> <a href='{{url("links/get_pdf/$template->uuid")}}'> {{ __('Get PDF')}}</a></x-primary-button>
         <form wire:submit="gen_links">
             <input type="number" wire:model="add_count" id="">
             <x-buttons.primary type="submit">{{ __('Add links')}}</x-buttons.primary>
         </form>
     </div>
-    <table class="w-full">
+    <table class="w-full py-3">
         <thead>
             <tr>
                 <th>{{__("Link")}}</th>
-                <th>{{__('Alias')}}</th>
+                {{-- <th>{{__('Alias')}}</th> --}}
                 <th>{{__('Began') }}</th>
                 <th>{{__('Complete')}}</th>
-                <th>{{__('Canceled')}}</th>
-                <th>{{__('Used')}}</th>
+                {{-- <th>{{__('Canceled')}}</th>
+                <th>{{__('Used')}}</th> --}}
                 <th></th>
             </tr>
 
         </thead>
         <tbody>
         @foreach ($links as $link)
-            <tr>
+            <tr class=" border-b-8 border-slate-300">
                 <td>
                     <a href='{{ url("worksheet/$template->uuid/$link->alias") }}'>{{ url("worksheet/$template->uuid/$link->alias") }}</a>
                 </td>
-                <td>{{ $link->alias }}</td>
+                {{-- <td>{{ $link->alias }}</td> --}}
                 <td>{{ $link->began }}</td>
                 <td>{{ $link->complete }}</td>
-                <td>{{ $link->canceled }}</td>
-                <td>{{ $link->used }}</td>
-                <td>
-                    <x-buttons.secondary  wire:click="delete_link('{{ $link->uuid }}')">
+                {{-- <td>{{ $link->canceled }}</td>
+                <td>{{ $link->used }}</td> --}}
+                <td class="text-end">
+                    <x-buttons.delete  wire:click="delete_link('{{ $link->uuid }}')">
                         {{__('Remove')}}
-                    </x-buttons.secondary>
+                    </x-buttons.delete>
                 </td>
             </tr>
         @endforeach

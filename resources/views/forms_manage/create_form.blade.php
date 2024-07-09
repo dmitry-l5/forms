@@ -1,9 +1,9 @@
 
-<script src="{{ Vite::asset('resources/js/forms_builder.js') }}"></script> 
+<script src="{{ Vite::asset('resources/js/forms_builder.js') }}"></script>
 <!-- <script src="{{ asset('js/forms_builder.js') }}"></script>  -->
 <x-layouts.app>
     <div class=" rounded mt-3 p-3 mp-3">
-        <script> 
+        <script>
             //let send_to = "{{ url('student/submit_worksheet') }}";
             let csrf = '@csrf';
         </script>
@@ -14,7 +14,7 @@
             <div class="worksheet" id='viewer'></div>
             <div style='margin:10px;'></div>
         </div>
-        <?php 
+        <?php
             if(isset($worksheet)){
                 echo(
                     "<script> let data_json = ".json_encode($worksheet->data_json)."; </script>"

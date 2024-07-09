@@ -43,7 +43,7 @@ Route::get('expire', function(){
     Cookie::expire('filled_form');
 });
 Route::view('show', 'show_components');
-Route::get('/worksheet/{form_id}/', [App\Http\Controllers\FormController::class, 'code_form']);
+// Route::get('/worksheet/{form_id}/', [App\Http\Controllers\FormController::class, 'code_form']);
 Route::get('/worksheet/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'create']);
 Route::post('worksheet/store/{form_uuid}/{code}', [App\Http\Controllers\FormController::class, 'store']);
 Route::post('worksheet/start/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'start']);

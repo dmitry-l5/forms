@@ -1,4 +1,6 @@
+
 <div {{ $attributes->merge(['class'=>'']) }}>
+
     <div class=" flex justify-between pl-10" >
         <div class="" x-text='title'></div>
         <div class="flex">

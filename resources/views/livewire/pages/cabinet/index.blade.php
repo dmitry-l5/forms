@@ -13,11 +13,13 @@ new
     #[Layout('components.layouts.app')]
     class extends Component{
         use WithPagination;
-
         public function with():array{
             return [
                 'forms'=>Gate::allows('create_forms')?FormTemplate::where(['author_id'=>Auth::user()->id])->orderBy('updated_at', 'DESC')->paginate(10):[],
             ];
+        }
+        public function delete($id){
+            FormTemplate::where(['id'=>$id, 'author_id'=>Auth::user()->id])->delete();
         }
 }; ?>
 <div class=" h-full p-3">
@@ -27,7 +29,7 @@ new
         <div class="flex justify-start">
             <x-buttons.link href="{{ url('templates/create') }}">
                 {{-- <a > --}}
-                    + Создать форму
+                    + {{ __('Create form') }}
                 {{-- </a> --}}
             </x-buttons.link>
 
@@ -39,9 +41,9 @@ new
             <table class="w-full border-collapse border border-slate-500 overflow-scroll">
                 <thead>
                     <tr>
-                        <td class="border border-slate-700 bg-slate-200">Название</td>
-                        <td class="border border-slate-700 bg-slate-200">Ссылки :</td>
-                        <td class="border border-slate-700 bg-slate-200">Действия</td>
+                        <th class="border border-slate-700 bg-slate-200">Название</th>
+                        {{-- <td class="border border-slate-700 bg-slate-200">Ссылки :</td> --}}
+                        <th class="border border-slate-700 bg-slate-200">Действия</th>
                     </tr>
                 </thead>
                 <tbody >
@@ -51,7 +53,7 @@ new
                         <td class="border border-slate-700" >
                             {{ $header->title ?? '' }}
                         </td>
-                        <td class="border border-slate-700">
+                        {{-- <td class="border border-slate-700">
                             на форму :
                             <a href="{{ url(config('app.form_prefix').'/'.$form->uuid) }}">
                                 {{ url(config('app.form_prefix').'/'.$form->uuid) }}
@@ -61,11 +63,12 @@ new
                             <a href="{{ url('result/'.$form->uuid) }}">
                                 {{ url('result/'.$form->uuid) }}
                             </a>
-                        </td>
-                        <td class="border border-slate-700">
-                            <x-forms.link_button_1 href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-forms.link_button_1>
-                            <x-buttons.link href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
-                            <x-buttons.link href="{{ url('links/template/'.$form->id) }}">{{ __('Links') }}</x-buttons.link>
+                        </td> --}}
+                        <td class="border border-slate-700 flex flex-col md:flex-row justify-end items-center grow">
+                            <x-buttons.link class="w-full md:w-fit"  href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-buttons.link >
+                            <x-buttons.link class="w-full md:w-fit" href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
+                            <x-buttons.link class="w-full md:w-fit" href="{{ url('links/template/'.$form->id) }}">{{ __('Links') }}</x-buttons.link>
+                            <x-buttons.delete wire:click="delete({{ $form->id }})">{{ __('Delete') }}</x-buttons.delete>
                         </td>
                     </tr>
                     @endforeach
