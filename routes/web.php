@@ -26,9 +26,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 //         return abort(404);
 //     }
 // });
-
 // Route::resource('pdf', App\Http\Controllers\TestPDFController::class );
-
 Route::get('pdf', function(){
     $pdf = Pdf::loadView('pdf.test', ['title'=>'TITLE', 'date'=>'12.09.2026', 'users'=>[
         (object)['id'=>100, 'name'=>'NAME','email'=>'oppa@oppa.oppa'],
@@ -48,11 +46,12 @@ Route::get('/worksheet/{form_id}/{code}', [App\Http\Controllers\FormController::
 Route::post('worksheet/store/{form_uuid}/{code}', [App\Http\Controllers\FormController::class, 'store']);
 Route::post('worksheet/start/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'start']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
-
 Route::prefix('cabinet')->middleware('auth')->group(function(){
     Volt::route('/', 'pages.cabinet.index');
 });
 Route::middleware('can:create_forms')->group(function(){
+    Route::get('/preview/{uuid}', [App\Http\Controllers\FormTemplateController::class, 'preview']);
+    Route::post('/preview_save', function(){return redirect('/');});
     Route::resource('templates', App\Http\Controllers\FormTemplateController::class);
     Route::prefix('links/')->group(function(){
         Volt::route('template/{template}', 'pages.links.index');
@@ -74,21 +73,12 @@ Route::middleware('can:create_forms')->group(function(){
         });
     });
 });
-
 // Route::get('form/create/{template}', [App\Http\Controllers\FormController::class, 'create']);
 // Route::resource('form', App\Http\Controllers\FormController::class)->except(['create', 'store' ]);
-
-
-
 Route::prefix('admin');
-
 //Route::view('/', 'index');
 Route::get('/', function(){ return redirect('cabinet');});
-
-
-
 //Route::get('pics', function(){ return view('slides');});
-
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -96,14 +86,10 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
-
-
-
-    // Route::prefix('forms')->group(function(){
-    //     Route::get('');
-    // })
+// Route::prefix('forms')->group(function(){
+//     Route::get('');
+// })
 //Route::get('forms', 'form_list');
 //Route::get('auth_forms', 'auth_form_list');
 // Route::get
-
 require __DIR__.'/auth.php';

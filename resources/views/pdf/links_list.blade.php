@@ -24,8 +24,17 @@
         </style>
 </head>
 <body>
+    @php
+        $data = json_decode($template->data_json, false);
+        $header = '';
+        array_walk($data->items, function($item, $key)use(&$header){
+            if($item->type == 'header'){
+                $header = $item->title;
+            }
+        })
+    @endphp
     <h1>
-        {{ $template->title}}
+        {{ $header }}
     </h1>
 
     <table class="">

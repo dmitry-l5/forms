@@ -11,23 +11,19 @@ class ResultController extends Controller{
     public function show(Request $request, string $template_id, int $viewer_id = 0){
         $template = FormTemplate::where(['uuid'=>$template_id])->first();
         if(!$template){return abort(404);}
-        // Answers::where()->get();
         $result = $this->collect_answers($template);
-
-        //dd('after collect data',$template, $template_id, $viewer_id);
-        // $form = json_decode($template->data_json, false);
         $alias = $template_id;
         switch($viewer_id){
             case 1:
-                $pdf = Pdf::loadView('pdf.result', compact('result', 'alias'));
+                $pdf = Pdf::loadView('pdf.result', compact('result', 'alias', 'template'));
                 return $pdf->stream();
-
         }
-        return view('forms.result', compact('result', 'alias'));
+        return view('forms.result', compact('result', 'alias', 'template'));
     }
     private function collect_answers($template){
         $form = json_decode($template->data_json);
-        $data = $template->answers->map(function(Answers $answers){
+        $answers_fresh = $template->answers->where('created_at', '>', $template->updated_at);
+        $data = $answers_fresh->map(function(Answers $answers){
             return json_decode($answers->data);
         });
         $result = (object)[];

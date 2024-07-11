@@ -4,6 +4,7 @@
         //dd($data);
         $index = 0;
         $count = count($data->items);
+        $index_option = 1;
         //dd($count);
     @endphp
 
@@ -30,7 +31,7 @@
             index : 0,
             index_max : {{ $count }},
             start(template, link){
-                fetch( '{{ url('worksheet/start/'.$template->uuid.'/'.$link->uuid) }}', {
+                fetch( '/worksheet/start/'+template+'/'+link, {
                 method:'POST',
                 headers:{
                     'Content-Type': 'application/json',
@@ -42,10 +43,10 @@
                 return;
             },
              }">
-        <form class='h-full' method="post" action="{{ url( config('app.form_prefix').'/store/'.$template->uuid.'/'.$link->uuid) }}" id='worksheet' >
+        <form class='h-full' method="post" action="{{ empty($link)?'/preview_save':( url( config('app.form_prefix').'/store/'.$template->uuid.'/'.$link->uuid) ) }}" id='worksheet' >
             @csrf
             @foreach ($data->items as $item )
-            <x-forms.card x-show="index == {{ $index }}" csrf='@csrf' x-data @message="alert('duykkukfyu');" url='' class='bg-slate-50'>
+            <x-forms.card x-show="index == {{ $index }}" csrf='@csrf' x-data @message="alert('');" url='' class='bg-slate-50'>
                 @switch($item->type)
                     @case('header')
                         <x-forms.header title="{{$item->title ?? ''}}" description='{{$item->description ?? ""}}'></x-forms.header>
@@ -55,7 +56,7 @@
                             @if (isset($item->options))
                                 <x-forms.checkbox_group>
                                     @foreach ( $item->options as $input_name => $title )
-                                        <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.checkbox_group_option>
+                                        <x-forms.checkbox_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" index="{{ $index_option++ }}" ></x-forms.checkbox_group_option>
                                     @endforeach
                                 </x-forms.checkbox_group>
                             @endif
@@ -74,7 +75,7 @@
                         </script>
                         @break
                     @case('checkbox')
-                        <x-forms.base title="{{$item->title}}" description='{{$item->description}}'>
+                        <x-forms.base title="{{$item->title}}" description=''>
                             <x-forms.checkbox title="{{$item->title}}" description="{{$item->description}}" name="{{ $item->input_name }}" ></x-forms.checkbox>
                         </x-forms.base>
                         @break
@@ -88,7 +89,7 @@
                             @if (isset($item->options))
                                 <x-forms.radio_group>
                                     @foreach ( $item->options as $input_name => $title )
-                                    <x-forms.radio_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" ></x-forms.radio_group_option>
+                                    <x-forms.radio_group_option input_name="{{ $item->input_name }}" name="{{ $input_name }}" title="{{$title}}" index="{{ $index_option++ }}"></x-forms.radio_group_option>
                                 @endforeach
                                 </x-forms.radio_group>
                             @endif
@@ -125,7 +126,11 @@
 
 
                     <x-forms.button_2 x-show="index > 0"  x-on:click="(e)=>{e.preventDefault(); index--;}">Назад</x-forms.button_2>
-                    <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); start('{{$template->uuid }}', '{{ $link->uuid}}' );  index++;}">Начать</x-forms.button_2>
+                    @if (empty($link))
+                        <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); index++;}">Начать</x-forms.button_2>
+                    @else
+                        <x-forms.button_2 x-show="index == 0 "  x-on:click="(e)=>{e.preventDefault(); start('{{$template->uuid }}', '{{ empty($link->uuid)?'null':$link->uuid }}' );  index++;}">Начать</x-forms.button_2>
+                    @endif
                     @php
                         $input_name = isset($item->input_name)?$item->input_name:null;
                     @endphp

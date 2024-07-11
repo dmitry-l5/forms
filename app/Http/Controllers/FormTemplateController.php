@@ -58,6 +58,12 @@ class FormTemplateController extends Controller
         return redirect(url('/'));
     }
 
+    public function preview(string $uuid)
+    {
+        $form = FormTemplate::where(['uuid'=>$uuid, 'author_id'=>Auth::user()->id])->first();
+        return view( 'slides', ['template'=>$form, 'link'=>null]);
+    }
+
     /**
      * Display the specified resource.
      */

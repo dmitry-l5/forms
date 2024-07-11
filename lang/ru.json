@@ -10,5 +10,8 @@
     "Edit" : "Редактировать",
     "Complete" : "Завершено",
     "Delete form" : "Удалить форму",
-    "Show results" : "Результаты"
+    "Show results" : "Результаты",
+    "Are you sure?":"Вы уверены?",
+    "Cancel":"Закрыть",
+    "Preview":"Обзор"
 }

@@ -23,7 +23,19 @@ new
         }
 }; ?>
 <div class=" h-full p-3">
-<div class="h-full">
+<div x-data="{show_delete_alert:false, form_id:-1}" class="h-full"><div class="">
+    <div x-show='show_delete_alert'  class="fixed left-0 top-0 w-full h-full bg-slate-500  bg-opacity-50 flex justify-center items-center border ">
+        <div class=" bg-slate-50 p-10">
+            <div class="pb-10 text-center">
+                {{ __('Are you sure?') }}
+            </div>
+            <div class="">
+                <x-buttons.secondary x-on:click='form_id = -1; show_delete_alert=false;'>{{ __('Cancel') }}</x-buttons.secondary>
+                <x-buttons.delete x-on:click="$wire.delete(form_id); form_id = -1; show_delete_alert=false; ">{{ __('Delete') }}</x-buttons.delete>
+            </div>
+        </div>
+    </div>
+</div>
     @if ((!config('app.need_email_verification'))|Auth::user()->hasVerifiedEmail())
         @if (Gate::allows('create_forms'))
         <div class="flex justify-start">
@@ -50,7 +62,7 @@ new
                     @foreach ($forms as $form)
                     @php(  $header = array_filter( json_decode($form->data_json)->items, function($item){return $item->type == 'header';})[0] ?? null  )
                     <tr class="overflow-scroll">
-                        <td class="border border-slate-700" >
+                        <td class="border border-slate-700 ps-3" >
                             {{ $header->title ?? '' }}
                         </td>
                         {{-- <td class="border border-slate-700">
@@ -65,10 +77,17 @@ new
                             </a>
                         </td> --}}
                         <td class="border border-slate-700 flex flex-col md:flex-row justify-end items-center grow">
-                            <x-buttons.link class="w-full md:w-fit"  href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-buttons.link >
+                            <x-buttons.link_info class="w-full md:w-fit"  href='/preview/{{ $form->uuid}}' >{{ __('Preview') }}</x-buttons.link_info>
+                            <x-buttons.link class="w-full md:w-fit"  href='/result/{{ $form->uuid}}'>{{ __('Show results') }}</x-buttons.link >
+                            <x-buttons.link class="w-full md:w-fit"  href='/templates/{{ $form->id }}/edit'>{{ __('Edit') }}</x-buttons.link>
+                            <x-buttons.link class="w-full md:w-fit"  href='/links/template/{{ $form->id }}'>{{ __('Links') }}</x-buttons.link>
+                            <x-buttons.delete  class="w-full md:w-fit" x-on:click="show_delete_alert = true; form_id = {{ $form->id }}" >{{ __('Delete') }}</x-buttons.delete>
+
+
+                            {{-- <x-buttons.link class="w-full md:w-fit"  href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-buttons.link >
                             <x-buttons.link class="w-full md:w-fit" href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
                             <x-buttons.link class="w-full md:w-fit" href="{{ url('links/template/'.$form->id) }}">{{ __('Links') }}</x-buttons.link>
-                            <x-buttons.delete wire:click="delete({{ $form->id }})">{{ __('Delete') }}</x-buttons.delete>
+                            <x-buttons.delete x-on:click="show_delete_alert = true; form_id = {{ $form->id }}" >{{ __('Delete') }}</x-buttons.delete> --}}
                         </td>
                     </tr>
                     @endforeach

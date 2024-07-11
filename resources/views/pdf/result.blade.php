@@ -58,6 +58,14 @@
             }
         )[0] ?? null;
     @endphp
+    <div class="text-center mb-6">
+        <div class="border border-sky-600 p-5 bg-sky-50">
+            Учитываются ответы полученные с момента последнего изменения содержания формы
+            <span class="font-bold">
+                {{ date('d.m.Y H:i', strtotime($template->updated_at)) }}
+            </span>
+        </div>
+    </div>
     <div class="header">
         <h1>{{ $header->title ?? '#title' }}</h1>
     </div>
@@ -81,19 +89,21 @@
                     </div>
                     <table class="w_100 ">
                         <tbody>
-                            @foreach ($item->result as $key => $value)
-                            <tr >
-                                <td class="w_50 border_bottom">
-                                    <span class="">{{ $key }}</span>
-                                </td>
-                                <td class="w_50 border_bottom">
-                                    <div class="w_100 text_end">
-                                        <span class="">{{ $value }}</span>/<span class="">{{ $result->data->count }}</span>
-                                        ( <span class="">{{ $result->data->count?($value/$result->data->count )*100:0 }}%</span> )
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
+                            @if(!empty($item->result))
+                                @foreach ($item->result as $key => $value)
+                                <tr >
+                                    <td class="w_50 border_bottom">
+                                        <span class="">{{ $key }}</span>
+                                    </td>
+                                    <td class="w_50 border_bottom">
+                                        <div class="w_100 text_end">
+                                            <span class="">{{ $value }}</span>/<span class="">{{ $result->data->count }}</span>
+                                            ( <span class="">{{ $result->data->count?($value/$result->data->count )*100:0 }}%</span> )
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

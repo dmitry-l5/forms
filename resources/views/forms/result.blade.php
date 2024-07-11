@@ -1,6 +1,14 @@
 <x-layouts.app>
     <div class="p-4 bg-sky-50  h-full">
         <x-forms.card class=' bg-white h-full !overflow-auto'>
+            <div class="text-center mb-6">
+                <div class="border border-sky-600 p-5 bg-sky-50">
+                    Учитываются ответы полученные с момента последнего изменения содержания формы
+                    <span class="font-bold">
+                        {{ date('d.m.Y H:i', strtotime($template->updated_at)) }}
+                    </span>
+                </div>
+            </div>
             <div class="flex justify-end">
                 <x-buttons.link href="{{ url('result/'.$alias.'/1') }}">
                     Отчёт
