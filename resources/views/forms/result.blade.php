@@ -9,7 +9,11 @@
                     </span>
                 </div>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-between">
+                <x-buttons.link href="{{ url('result_clear/'.$alias) }}">
+                    Удалить результаты
+                </x-buttons.link>
+
                 <x-buttons.link href="{{ url('result/'.$alias.'/1') }}">
                     Отчёт
                 </x-buttons.link>

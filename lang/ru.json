@@ -13,5 +13,8 @@
     "Show results" : "Результаты",
     "Are you sure?":"Вы уверены?",
     "Cancel":"Закрыть",
-    "Preview":"Обзор"
+    "Preview":"Обзор",
+    "Release":"Выдать",
+    "Released":"Выдана",
+    "Link copied to clipboard":"Ссылка скопированна в буфер обмена"
 }

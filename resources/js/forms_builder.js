@@ -106,7 +106,8 @@ function forms_builder(send_template_to, csrf, template_id = null){
                 }
                 node.append(select);
                 let button = document.createElement('button');
-                button.onclick = (e)=>{e.preventDefault(); this.remove_field(e)};
+                button.onclick = (e)=>{e.preventDefault();
+                this.remove_field(e)};
                 button.classList.add('delete_button');
                 button.innerHTML = 'удалить';
                 node.append(button);
@@ -214,20 +215,20 @@ function forms_builder(send_template_to, csrf, template_id = null){
         checkbox_group:{
             editor:(data)=>{
                 let node = this.palette.base.editor(data);
-                console.warn(node);
+                // console.warn(node);
                 let options_panel = document.createElement('div');
                 options_panel.classList.add('options_panel');
                 let add_button = document.createElement('div');
                 add_button.classList.add('add_option_button');
                 if(data.options){
-                    console.log('data.options');
-                    console.log(data.options);
+                    // console.log('data.options');
+                    // console.log(data.options);
                     Object.entries(data.options).forEach((item)=>{
                         this.add_option_silent(options_panel, item);
                     });
-                    console.warn('options ok');
+                    // console.warn('options ok');
                 }else{
-                    console.warn('options not');
+                    // console.warn('options not');
                 }
                 let builder = this;
                 add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e); };
@@ -246,21 +247,21 @@ function forms_builder(send_template_to, csrf, template_id = null){
         radio_group:{
             editor:(data)=>{
                 let node = this.palette.base.editor(data);
-                console.warn(node);
-                console.warn(data);
+                // console.warn(node);
+                // console.warn(data);
                 let options_panel = document.createElement('div');
                 options_panel.classList = 'options_panel';
                 let add_button = document.createElement('div');
                 add_button.classList = 'add_option_button';
                 if(data.options){
-                    console.log('data.options');
-                    console.log(data.options);
+                    // console.log('data.options');
+                    // console.log(data.options);
                     Object.entries(data.options).forEach((item)=>{
                         this.add_option_silent(options_panel, item);
                     });
-                    console.warn('options ok');
+                    // console.warn('options ok');
                 }else{
-                    console.warn('options not');
+                    // console.warn('options not');
                 }
                 let builder = this;
                 add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e); };
@@ -325,7 +326,8 @@ function forms_builder(send_template_to, csrf, template_id = null){
     };
     this.add_option_silent = (panel, data = null )=>{
         let option_id = '';
-        let option_title = null;       console.log('data = ');
+        let option_title = null;
+        //  console.log('data = ');
         if(data != null){
             [id, title] = data;
             option_title = title;
@@ -356,6 +358,7 @@ function forms_builder(send_template_to, csrf, template_id = null){
 
     };
     this.remove_field = (e)=>{
+        console.log(e.target);
         e.target.parentNode.parentNode.remove();
     };
 
@@ -542,7 +545,7 @@ function forms_builder(send_template_to, csrf, template_id = null){
             result.items.push(obj);
         });
         // console.log(result);
-         console.warn(JSON.stringify(result));
+        //  console.warn(JSON.stringify(result));
         return JSON.stringify(result);
     };
     this.send_template = (form)=>{

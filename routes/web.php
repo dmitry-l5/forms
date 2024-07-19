@@ -46,6 +46,7 @@ Route::get('/worksheet/{form_id}/{code}', [App\Http\Controllers\FormController::
 Route::post('worksheet/store/{form_uuid}/{code}', [App\Http\Controllers\FormController::class, 'store']);
 Route::post('worksheet/start/{form_id}/{code}', [App\Http\Controllers\FormController::class, 'start']);
 Route::get('/result/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'show']);
+Route::get('/result_clear/{form_id}/{viwer_id?}', [App\Http\Controllers\ResultController::class, 'clear']);
 Route::prefix('cabinet')->middleware('auth')->group(function(){
     Volt::route('/', 'pages.cabinet.index');
 });

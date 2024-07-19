@@ -54,7 +54,7 @@ new
                 <thead>
                     <tr>
                         <th class="border border-slate-700 bg-slate-200">Название</th>
-                        {{-- <td class="border border-slate-700 bg-slate-200">Ссылки :</td> --}}
+                         <td class="border border-slate-700 bg-slate-200"></td>
                         <th class="border border-slate-700 bg-slate-200">Действия</th>
                     </tr>
                 </thead>
@@ -65,8 +65,23 @@ new
                         <td class="border border-slate-700 ps-3" >
                             {{ $header->title ?? '' }}
                         </td>
-                        {{-- <td class="border border-slate-700">
-                            на форму :
+                        <td class=" border  border-slate-700 text-xs ">
+                            <div class="row">
+                                <div class="col col-6">
+                                    Создана : {{ date( "H.i / d.m.Y", strtotime($form->created_at)) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-6">
+                                    Обновлено : {{ date( "H.i / d.m.Y", strtotime($form->updated_at)) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-6">
+                                    Учтено ответов : {{ $form->answers->where('created_at', '>', $form->updated_at)->count() }}
+                                </div>
+                            </div>
+                           {{-- на форму :
                             <a href="{{ url(config('app.form_prefix').'/'.$form->uuid) }}">
                                 {{ url(config('app.form_prefix').'/'.$form->uuid) }}
                             </a>
@@ -75,15 +90,16 @@ new
                             <a href="{{ url('result/'.$form->uuid) }}">
                                 {{ url('result/'.$form->uuid) }}
                             </a>
-                        </td> --}}
-                        <td class="border border-slate-700 flex flex-col md:flex-row justify-end items-center grow">
-                            <x-buttons.link_info class="w-full md:w-fit"  href='/preview/{{ $form->uuid}}' >{{ __('Preview') }}</x-buttons.link_info>
-                            <x-buttons.link class="w-full md:w-fit"  href='/result/{{ $form->uuid}}'>{{ __('Show results') }}</x-buttons.link >
-                            <x-buttons.link class="w-full md:w-fit"  href='/templates/{{ $form->id }}/edit'>{{ __('Edit') }}</x-buttons.link>
-                            <x-buttons.link class="w-full md:w-fit"  href='/links/template/{{ $form->id }}'>{{ __('Links') }}</x-buttons.link>
-                            <x-buttons.delete  class="w-full md:w-fit" x-on:click="show_delete_alert = true; form_id = {{ $form->id }}" >{{ __('Delete') }}</x-buttons.delete>
-
-
+                            --}}
+                        </td>
+                        <td class="border border-slate-700 ">
+                            <div class="flex flex-col md:flex-row justify-end items-center grow h-full border">
+                                <x-buttons.link_info class="w-full md:w-fit"  href='/preview/{{ $form->uuid}}' >{{ __('Preview') }}</x-buttons.link_info>
+                                <x-buttons.link class="w-full md:w-fit"  href='/result/{{ $form->uuid}}'>{{ __('Show results') }}</x-buttons.link >
+                                <x-buttons.link class="w-full md:w-fit"  href='/templates/{{ $form->id }}/edit'>{{ __('Edit') }}</x-buttons.link>
+                                <x-buttons.link class="w-full md:w-fit"  href='/links/template/{{ $form->id }}'>{{ __('Links') }}</x-buttons.link>
+                                <x-buttons.delete  class="w-full md:w-fit" x-on:click="show_delete_alert = true; form_id = {{ $form->id }}" >{{ __('Delete') }}</x-buttons.delete>
+                            </div>
                             {{-- <x-buttons.link class="w-full md:w-fit"  href="{{ url('result/'.$form->uuid) }}">{{ __('Show results') }}</x-buttons.link >
                             <x-buttons.link class="w-full md:w-fit" href="{{ url('templates/'.$form->id.'/edit') }}">{{ __('Edit') }}</x-buttons.link>
                             <x-buttons.link class="w-full md:w-fit" href="{{ url('links/template/'.$form->id) }}">{{ __('Links') }}</x-buttons.link>

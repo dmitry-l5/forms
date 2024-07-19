@@ -37,6 +37,15 @@ use Barryvdh\DomPDF\Facade\Pdf;
                 $this->links = Links::where(['template_id'=>$this->template->id])->get();
             }
         }
+        public function release_link($uuid)
+        {
+            $link =  Links::where(['uuid'=>$uuid])->first();
+            if($link){
+                $link->used = true;
+                $link->save();
+                $this->mount();
+            }
+        }
         public function delete_link($uuid)
         {
             $this->uuid_test = $uuid;
@@ -59,6 +68,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 ?>
 
 <div>
+    <div id="copied_board" class="left-0 top-0 fixed w-full border border-red-700 flex justify-center" style="display: none">
+        <div class=" p-5">
+            <div class="p-5 rounded-lg border-2 border-emerald-800 bg-emerald-600 text-emerald-50 bold">
+                {{ __('Link copied to clipboard') }}
+            </div>
+        </div>
+    </div>
     <div class="flex justify-between py-3">
         <x-primary-button type="button"> <a href='{{url("links/get_pdf/$template->uuid")}}'> {{ __('Get PDF')}}</a></x-primary-button>
         <form wire:submit="gen_links">
@@ -73,8 +89,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
                 {{-- <th>{{__('Alias')}}</th> --}}
                 <th>{{__('Began') }}</th>
                 <th>{{__('Complete')}}</th>
-                {{-- <th>{{__('Canceled')}}</th>
-                <th>{{__('Used')}}</th> --}}
+                {{-- <th>{{__('Canceled')}}</th>--}}
+                <th>{{__('Used')}}</th>
                 <th></th>
             </tr>
 
@@ -83,7 +99,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
         @foreach ($links as $link)
             <tr class=" border-b-8 border-slate-300">
                 <td>
-                    <a href='{{ url("worksheet/$template->uuid/$link->alias") }}'>{{ url("worksheet/$template->uuid/$link->alias") }}</a>
+                    <a onclick="copy(event)" href='{{ "/worksheet/$template->uuid/$link->alias" }}'>{{ url("worksheet/$template->uuid/$link->alias") }}</a>
                 </td>
                 {{-- <td>{{ $link->alias }}</td> --}}
                 <td>{{ $link->began }}</td>
@@ -91,6 +107,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
                 {{-- <td>{{ $link->canceled }}</td>
                 <td>{{ $link->used }}</td> --}}
                 <td class="text-end">
+                    @if ( !$link->used )
+                    <x-buttons.info  wire:click="release_link('{{ $link->uuid }}')">
+                        {{__('Release')}}
+                    </x-buttons.info>
+                    @else
+                        <x-buttons.secondary type="button">{{ __("Released") }}</x-buttons.secondary>
+                    @endif
                     <x-buttons.delete  wire:click="delete_link('{{ $link->uuid }}')">
                         {{__('Remove')}}
                     </x-buttons.delete>
@@ -100,4 +123,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
         </tbody>
     </table>
+    <script>
+        function copy(e){
+            e.preventDefault();
+            navigator.clipboard.writeText(e.target.href);
+            copied_board.style = '';
+            setTimeout(() => {
+                copied_board.style = 'display:none';
+            }, 1000);
+        }
+    </script>
 </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FormTemplate;
 use App\Models\Answers;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class ResultController extends Controller{
     public function show(Request $request, string $template_id, int $viewer_id = 0){
@@ -19,6 +20,16 @@ class ResultController extends Controller{
                 return $pdf->stream();
         }
         return view('forms.result', compact('result', 'alias', 'template'));
+    }
+    public function clear(Request $request, string $template_id, int $viewer_id = 0){
+        $template = FormTemplate::where(['uuid'=>$template_id])->first();
+        if(!$template)
+            return abort(404);
+        if($template->author_id != Auth::user()->id)
+            return abort(403);
+        Answers::where('template_id', $template->id)->delete();
+        $template->touch();
+        return back();
     }
     private function collect_answers($template){
         $form = json_decode($template->data_json);

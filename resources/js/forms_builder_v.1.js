@@ -57,15 +57,15 @@ function forms_builder(send_template_to, csrf){
                 let btn_submit = document.createElement('button');
                 btn_submit.classList = 'button button_ok mr-5';
                 btn_submit.innerHTML = 'сохранить форму';
-                btn_submit.onclick = (e)=>{e.preventDefault(); this.send_template(form)}; 
-                
+                btn_submit.onclick = (e)=>{e.preventDefault(); this.send_template(form)};
+
                 node.append(btn_add);
-                
+
                 node.append(btn_preview);
                 node.append(btn_get_json);
 
                 node.append(btn_submit);
-                // node.innerHTML_ = 
+                // node.innerHTML_ =
                 // '<div class="d-flex"><div><button onclick="'+function(e){this.add_field(e);}+'">добавить поле</button></div><div><button onclick="window.builder.get_json();">предпросмотр</button></div><div><button type="submit" onclick="window.builder.save_template()">сохранить форму</button></div></div>';
                 return node;
             },
@@ -88,9 +88,9 @@ function forms_builder(send_template_to, csrf){
                 select.name = 'type';
                 select.classList = 'form-control my-2';
                 //alert(data.type);
-                
+
                 select.onchange = (e)=>{e.preventDefault(); this.change_type(e)};
-                select.innerHTML = 
+                select.innerHTML =
                 "<option value='null'>тип поля</option>"
                 +"<option value='checkbox'>флаг: да/нет</option>"
                 +"<option value='checkbox_group'>группа флагов: да/нет </option>"
@@ -132,7 +132,7 @@ function forms_builder(send_template_to, csrf){
             editor:(data)=>{
                 let node = document.createElement('div');
                 node.id = data.id;
-                node.innerHTML = 
+                node.innerHTML =
                 '<div class="d-flex flex-column">'
                 +'<input worksheet_field type="hidden" name="field_type" value = "' + data.type + '">'
                 +'<label class="helios my-2" for="header_' + data.id + '">Заголовок</label>'
@@ -213,14 +213,14 @@ function forms_builder(send_template_to, csrf){
         checkbox_group:{
             editor:(data)=>{
                 let node = this.palette.base.editor(data);
-                console.warn(node);
+                // console.warn(node);
                 let options_panel = document.createElement('div');
                 options_panel.classList = 'options_panel';
                 let add_button = document.createElement('div');
                 add_button.classList = 'add_option_button';
                 let builder = this;
                 add_button.onclick = (e)=>{e.preventDefault(); this.add_option(e, this); };
-                add_button.innerHTML = 
+                add_button.innerHTML =
                 "<button>+ Добавить вариант</button>"
                 +""
                 +""
@@ -280,7 +280,7 @@ function forms_builder(send_template_to, csrf){
         let options_panel = e.target.parentNode.parentNode;
         let option_container = document.createElement('div');
         option_container.id = 'container_' + option_id;
-        option_container.innerHTML = 
+        option_container.innerHTML =
         "<label for='"+option_id+"'>текст поля</label>"
         +"<input type='text' name='"+option_id+"' id="+option_id+" option>"
         +""
@@ -294,7 +294,7 @@ function forms_builder(send_template_to, csrf){
         option_container.append(delete_option_button);
         options_panel.append(option_container);
 
-        console.log(e.target.parentNode.parentNode);
+        // console.log(e.target.parentNode.parentNode);
 
     };
     this.remove_field = (e)=>{
@@ -416,8 +416,8 @@ function forms_builder(send_template_to, csrf){
         }
         this.id_counter = data.aux.id_counter;
         this.template_id = data.aux.template_id ?? -1;
-        console.warn('data.aux.template_id');
-        console.warn(data.aux.template_id);
+        // console.warn('data.aux.template_id');
+        // console.warn(data.aux.template_id);
         data.items.forEach((item, index, arr)=>{
             // console.error(index);
             // console.error(item);
@@ -456,7 +456,7 @@ function forms_builder(send_template_to, csrf){
         // console.log(form);
         // console.log('item = ');
         // console.log(item);
-        if(item){ 
+        if(item){
         }else{
             // item = {type:'new'};
             item = this.get_empty_item();
@@ -509,7 +509,7 @@ function forms_builder(send_template_to, csrf){
             result.items.push(obj);
         });
         // console.log(result);
-         console.warn(JSON.stringify(result));
+        //  console.warn(JSON.stringify(result));
         return JSON.stringify(result);
     };
     this.send_template = (form)=>{

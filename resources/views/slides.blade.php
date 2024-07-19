@@ -43,6 +43,8 @@
                 return;
             },
              }">
+
+             {{-- {{ dd(json_decode($template->data_json)) }} --}}
         <form class='h-full' method="post" action="{{ empty($link)?'/preview_save':( url( config('app.form_prefix').'/store/'.$template->uuid.'/'.$link->uuid) ) }}" id='worksheet' >
             @csrf
             @foreach ($data->items as $item )
@@ -75,7 +77,7 @@
                         </script>
                         @break
                     @case('checkbox')
-                        <x-forms.base title="{{$item->title}}" description=''>
+                        <x-forms.base title="{{$item->title}}" description="">
                             <x-forms.checkbox title="{{$item->title}}" description="{{$item->description}}" name="{{ $item->input_name }}" ></x-forms.checkbox>
                         </x-forms.base>
                         @break
@@ -142,7 +144,7 @@
                     </x-forms.button_2>
                 </x-slot:control>
                 <script>
-                    console.warn( typeof({{ $item->input_name ?? 'default' }}_validate) == 'function'  );
+                    // console.warn( typeof({{ $item->input_name ?? 'default' }}_validate) == 'function'  );
                    // if(typeof({{ $item->input_name ?? 'default' }}_validate()) !=='undefined' ){ {{ $item->input_name ?? 'default' }}_validate();}
                 </script>
 
